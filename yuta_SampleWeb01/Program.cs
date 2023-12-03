@@ -1,11 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Merino;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using NLog.Web;
+using yuta_SampleWeb01.Controllers;
 using yuta_SampleWeb01.Data;
 using yuta_SampleWeb01.Models.SeedData;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+
+
 builder.Services.AddDbContext<yuta_SampleWeb01Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("yuta_SampleWeb01Context") ?? throw new InvalidOperationException("Connection string 'yuta_SampleWeb01Context' not found.")));
+
+
+MerinoWebApplication.CreateWebApplication(ref builder);
+
+//builder.Logging.ClearProviders();
+//builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+//builder.Host.UseNLog();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -23,6 +35,7 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 app.UseStaticFiles();
 

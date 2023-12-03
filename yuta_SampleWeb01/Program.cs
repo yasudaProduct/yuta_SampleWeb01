@@ -1,8 +1,7 @@
 ﻿using Merino;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using NLog.Web;
-using yuta_SampleWeb01.Controllers;
 using yuta_SampleWeb01.Data;
 using yuta_SampleWeb01.Models.SeedData;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 using yuta_SampleWeb01.Models;
 
 namespace yuta_SampleWeb01.Controllers
@@ -15,6 +16,10 @@ namespace yuta_SampleWeb01.Controllers
 
         public IActionResult Index()
         {
+            string userId = User.FindFirst(ClaimTypes.Name).Value;
+            string role = User.FindFirst(ClaimTypes.Role).Value;
+            ViewData["UserID"] = userId;
+            ViewData["Role"] = role;
             return View();
         }
 

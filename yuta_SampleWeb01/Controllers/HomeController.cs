@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Merino.Filters;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using yuta_SampleWeb01.Models;
 
 namespace yuta_SampleWeb01.Controllers
 {
+    [TypeFilter(typeof(AccessLogFilter))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -12,14 +14,6 @@ namespace yuta_SampleWeb01.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-
-            _logger.LogTrace("Trace で出力します。");
-            _logger.LogDebug("Debug で出力します。");
-            _logger.LogInformation("Information で出力します。");
-            _logger.LogWarning("Warning で出力します。");
-            _logger.LogError("Error で出力します。");
-            _logger.LogCritical("Critical で出力します。");
-
         }
 
         public IActionResult Index()

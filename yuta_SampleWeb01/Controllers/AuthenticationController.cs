@@ -9,6 +9,15 @@ namespace yuta_SampleWeb01.Controllers
     [AllowAnonymous]
     public class AuthenticationController : Controller
     {
+
+        private readonly ILogger _logger;
+
+        public AuthenticationController(ILogger<AuthenticationController> logger)
+        {
+            _logger = logger;
+        }
+
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -40,6 +49,8 @@ namespace yuta_SampleWeb01.Controllers
             //認証cookieをレスポンスに追加
             await HttpContext.SignInAsync(principal);
 
+            _logger.LogInformation($"Controller:{nameof(AuthenticationController)} Action:{nameof(AuthenticationController.Login)} User:{loginId} Success!");
+
             // 認証されたらHomeページへリダイレクトする
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
@@ -47,8 +58,15 @@ namespace yuta_SampleWeb01.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+
             // 認証Cookieをレスポンスから削除
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!(userId is null))
+            {
+                _logger.LogInformation($"Controller:{nameof(AuthenticationController)} Action:{nameof(AuthenticationController.Logout)} User:{userId} Success!");
+            }
 
             // ログイン画面にリダイレクト
             return RedirectToAction(nameof(Login));

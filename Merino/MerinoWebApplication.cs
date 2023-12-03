@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Merino.Data;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
@@ -14,6 +16,9 @@ namespace Merino
 
             try
             {
+                //builder.Services.AddDbContext<MerinoDbContext>(options =>
+                //options.UseSqlServer(builder.Configuration.GetConnectionString("yuta_SampleWeb01Context") ?? throw new InvalidOperationException("Connection string 'yuta_SampleWeb01Context' not found.")));
+
 
                 builder.Logging.ClearProviders();
                 builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);

@@ -22,6 +22,18 @@ MerinoWebApplication.CreateWebApplication(ref builder);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options => {
+        options.LoginPath = "/Authentication/Login";
+        options.AccessDeniedPath = "/Authentication/AccessDenied";
+    });
+
+builder.Services.AddAuthorization(options => {
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -41,10 +53,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+//app.MapRazorPages();
+//app.MapDefaultControllerRoute();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Authentication}/{action=Login}/{id?}");
 
 app.Run();

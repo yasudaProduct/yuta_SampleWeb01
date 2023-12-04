@@ -27,6 +27,26 @@ namespace yuta_SampleWeb01.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "t_data_a",
+                columns: table => new
+                {
+                    user_id = table.Column<int>(type: "int", nullable: false),
+                    ccompany_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    deleted_flg = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    create_pgm_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    create_user_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    create_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    update_pgm_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    update_user_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    update_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_t_data_a", x => x.user_id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "t_user_company",
                 columns: table => new
                 {
@@ -51,6 +71,9 @@ namespace yuta_SampleWeb01.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Movie");
+
+            migrationBuilder.DropTable(
+                name: "t_data_a");
 
             migrationBuilder.DropTable(
                 name: "t_user_company");

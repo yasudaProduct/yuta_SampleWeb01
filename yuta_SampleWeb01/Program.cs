@@ -1,4 +1,5 @@
 ﻿using Merino;
+using Merino.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;

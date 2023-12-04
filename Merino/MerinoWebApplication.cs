@@ -19,13 +19,17 @@ namespace Merino
                 //builder.Services.AddDbContext<MerinoDbContext>(options =>
                 //options.UseSqlServer(builder.Configuration.GetConnectionString("yuta_SampleWeb01Context") ?? throw new InvalidOperationException("Connection string 'yuta_SampleWeb01Context' not found.")));
 
-                //依存注入
+                //依存注入 https://github.com/khellang/Scrutor/tree/master
                 builder.Services.Scan(scan =>
                     scan.FromEntryAssembly()
-                    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service")))
+                    //.AddClasses(classes => classes.InNamespaces("Services"))
+                    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service") || type.Name.EndsWith("Dao")))
+                    //.UsingRegistrationStrategy(Scrutor.RegistrationStrategy.Skip)
                     .AsSelfWithInterfaces()
+                    //.WithSingletonLifetime());
                     .WithScopedLifetime());
-                
+
+                //Nlog登録
                 builder.Logging.ClearProviders();
                 builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 builder.Host.UseNLog();

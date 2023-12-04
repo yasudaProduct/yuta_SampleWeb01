@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Merino.Data;
 using Microsoft.EntityFrameworkCore;
 using yuta_SampleWeb01.Models;
 
@@ -16,6 +17,9 @@ namespace yuta_SampleWeb01.Data
 
         public DbSet<yuta_SampleWeb01.Models.Movie> Movie { get; set; } = default!;
         public DbSet<yuta_SampleWeb01.Entity.TUserCompany> TUserCompany { get; set; } = default!;
+        public DbSet<yuta_SampleWeb01.Entity.TDataA> TDataA { get; set; } = default!;
+
         
+
     }
 }

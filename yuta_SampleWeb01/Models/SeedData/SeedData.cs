@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Merino.Data;
+using Microsoft.EntityFrameworkCore;
 using yuta_SampleWeb01.Data;
 
 namespace yuta_SampleWeb01.Models.SeedData

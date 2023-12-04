@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Merino
+namespace Merino.Service
 {
-    public class MerinoService
+    public class MerinoDao
     {
     }
 }

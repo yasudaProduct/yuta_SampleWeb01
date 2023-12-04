@@ -15,5 +15,7 @@ namespace yuta_SampleWeb01.Data
         }
 
         public DbSet<yuta_SampleWeb01.Models.Movie> Movie { get; set; } = default!;
+        public DbSet<yuta_SampleWeb01.Entity.TUserCompany> TUserCompany { get; set; } = default!;
+        
     }
 }

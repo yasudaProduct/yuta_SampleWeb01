@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using yuta_SampleWeb01.ViewModels;
 using yuta_SampleWeb01.Services;
+using Merino.Filters;
 
 namespace yuta_SampleWeb01.Controllers
 {
+    [TypeFilter(typeof(AccessLogFilter))]
     public class UserController : Controller
     {
         private readonly UserService  _service;

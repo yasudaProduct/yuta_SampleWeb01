@@ -16,12 +16,5 @@ namespace yuta_SampleWeb01.Models
         [Required]
         public string Password { get; set; }
 
-        public int Add(TUser user)
-        {
-            
-
-            return 0;
-        }
-
     }
 }

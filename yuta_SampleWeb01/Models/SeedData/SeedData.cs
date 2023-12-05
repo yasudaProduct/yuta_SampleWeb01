@@ -1,8 +1,9 @@
 ﻿using Merino.Data;
 using Microsoft.EntityFrameworkCore;
 using yuta_SampleWeb01.Data;
+using yuta_SampleWeb01.Models;
 
-namespace yuta_SampleWeb01.Models.SeedData
+namespace yuta_SampleWeb01.ViewModels.SeedData
 {
     public static class SeedData
     {

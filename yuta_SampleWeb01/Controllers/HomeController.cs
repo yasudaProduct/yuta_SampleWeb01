@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
-using yuta_SampleWeb01.Models;
+using yuta_SampleWeb01.ViewModels;
 
 namespace yuta_SampleWeb01.Controllers
 {

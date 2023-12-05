@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace yuta_SampleWeb01.Entity
+namespace yuta_SampleWeb01.Models
 {
     public class BaseEntity
     {

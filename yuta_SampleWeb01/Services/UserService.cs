@@ -2,44 +2,41 @@
 using Merino.Service;
 using Microsoft.EntityFrameworkCore;
 using yuta_SampleWeb01.Data;
-using yuta_SampleWeb01.Entity;
 using yuta_SampleWeb01.Models;
+using yuta_SampleWeb01.ViewModels;
 using yuta_SampleWeb01.Services.Dao;
+using yuta_SampleWeb01.Services.Businesses;
 
 namespace yuta_SampleWeb01.Services
 {
-    public class UserService: MerinoService
+    public class UserService : MerinoService
     {
         private readonly yuta_SampleWeb01Context _context;
 
-        private readonly UserDao _userDao;
+        private readonly UserBusiness  _userBusiness;
 
-        public UserService(yuta_SampleWeb01Context context, UserDao userDao) 
+        public UserService (yuta_SampleWeb01Context context, UserBusiness userBusiness) 
         {
             _context = context;
-            _userDao = userDao;
+            _userBusiness = userBusiness;
         }
 
-        public UserViewModel create(UserViewModel user) {
+        /// <summary>
+        /// ユーザーを登録する
+        /// </summary>
+        /// <param name="userModel"></param>
+        /// <returns></returns>
+        public UserViewModel create(UserViewModel userModel) {
 
             //トランザクション
             using (var tran = _context.Database.BeginTransaction())
             {
 
-                TUserCompany userCompany = new TUserCompany();
-                userCompany.UserId = user.UserId;
-                userCompany.CompanyName = user.CompanyName;
-                userCompany.Remarks = user.Remarks;
-                userCompany.DeletedFlg = "";
-                userCompany.CreateDate = new DateTime();
-                userCompany.CreateUserId = "test";
-                userCompany.CreatePgmId = "test";
-                userCompany.UpdateDate = new DateTime();
-                userCompany.UpdateUserId = "test";
-                userCompany.UpdatePgmId = "test";
+                //ユーザー登録
+                _userBusiness.CreateUser(userModel);
 
-                _userDao.Create(userCompany);
-                
+                tran.Commit();
+
             };
 
             return null;

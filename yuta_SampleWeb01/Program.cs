@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using yuta_SampleWeb01.Data;
-using yuta_SampleWeb01.Models.SeedData;
+using yuta_SampleWeb01.ViewModels.SeedData;
 using yuta_SampleWeb01.Services;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);

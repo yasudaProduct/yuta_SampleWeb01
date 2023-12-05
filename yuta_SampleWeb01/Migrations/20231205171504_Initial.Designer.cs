@@ -12,8 +12,8 @@ using yuta_SampleWeb01.Data;
 namespace yuta_SampleWeb01.Migrations
 {
     [DbContext(typeof(yuta_SampleWeb01Context))]
-    [Migration("20231204114337_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231205171504_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -76,6 +76,55 @@ namespace yuta_SampleWeb01.Migrations
                     b.ToTable("t_data_a");
                 });
 
+            modelBuilder.Entity("yuta_SampleWeb01.Entity.TUser", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("create_date");
+
+                    b.Property<string>("CreatePgmId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("create_pgm_id");
+
+                    b.Property<string>("CreateUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("create_user_id");
+
+                    b.Property<string>("DeletedFlg")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("deleted_flg");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("password");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("update_date");
+
+                    b.Property<string>("UpdatePgmId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("update_pgm_id");
+
+                    b.Property<string>("UpdateUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("update_user_id");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("t_user");
+                });
+
             modelBuilder.Entity("yuta_SampleWeb01.Entity.TUserCompany", b =>
                 {
                     b.Property<int>("UserId")
@@ -83,6 +132,7 @@ namespace yuta_SampleWeb01.Migrations
                         .HasColumnName("user_id");
 
                     b.Property<string>("CompanyName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("ccompany_name");
 
@@ -106,6 +156,7 @@ namespace yuta_SampleWeb01.Migrations
                         .HasColumnName("deleted_flg");
 
                     b.Property<string>("Remarks")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("remarks");
 

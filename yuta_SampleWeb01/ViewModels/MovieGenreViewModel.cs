@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using yuta_SampleWeb01.Models;
 
-namespace yuta_SampleWeb01.Models
+namespace yuta_SampleWeb01.ViewModels
 {
     public class MovieGenreViewModel
     {

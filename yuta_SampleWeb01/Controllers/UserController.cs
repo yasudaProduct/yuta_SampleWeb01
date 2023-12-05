@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using yuta_SampleWeb01.Models;
+using yuta_SampleWeb01.ViewModels;
 using yuta_SampleWeb01.Services;
 
 namespace yuta_SampleWeb01.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserService _service;
+        private readonly UserService  _service;
 
-        public UserController(UserService service)
+        public UserController(UserService  service)
         {
             _service = service;
         }

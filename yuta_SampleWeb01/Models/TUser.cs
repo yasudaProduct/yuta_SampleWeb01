@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace yuta_SampleWeb01.Models
 {
-    [Table("t_data_a")]
-    public class TDataA : BaseEntity
+    [Table("t_user")]
+    public class TUser : BaseEntity
     {
         [Key]
         [Column("user_id")]
@@ -12,11 +12,16 @@ namespace yuta_SampleWeb01.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UserId { get; set; }
 
-        [Column("ccompany_name")]
-        public string? CompanyName { get; set; }
+        [Column("password")]
+        [Required]
+        public string Password { get; set; }
 
-        [Column("remarks")]
-        public string? Remarks { get; set; }
+        public int Add(TUser user)
+        {
+            
+
+            return 0;
+        }
 
     }
 }

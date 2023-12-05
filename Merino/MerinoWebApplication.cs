@@ -23,7 +23,7 @@ namespace Merino
                 builder.Services.Scan(scan =>
                     scan.FromEntryAssembly()
                     //.AddClasses(classes => classes.InNamespaces("Services"))
-                    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service") || type.Name.EndsWith("Dao")))
+                    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service") || type.Name.EndsWith("Business")|| type.Name.EndsWith("Dao")))
                     //.UsingRegistrationStrategy(Scrutor.RegistrationStrategy.Skip)
                     .AsSelfWithInterfaces()
                     //.WithSingletonLifetime());

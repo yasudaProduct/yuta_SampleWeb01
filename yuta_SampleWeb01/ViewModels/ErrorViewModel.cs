@@ -1,4 +1,4 @@
-namespace yuta_SampleWeb01.Models
+namespace yuta_SampleWeb01.ViewModels
 {
     public class ErrorViewModel
     {

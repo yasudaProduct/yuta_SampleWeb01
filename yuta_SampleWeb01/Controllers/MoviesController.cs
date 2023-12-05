@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using yuta_SampleWeb01.Data;
 using yuta_SampleWeb01.Models;
+using yuta_SampleWeb01.ViewModels;
 
 namespace yuta_SampleWeb01.Controllers
 {

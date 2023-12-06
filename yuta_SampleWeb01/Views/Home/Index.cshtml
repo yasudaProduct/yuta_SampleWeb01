@@ -1,4 +1,13 @@
-﻿@{
+﻿@using Merino.config;
+@using Microsoft.Extensions.Options;
+@inject IOptionsSnapshot<AppSetteings> Options
+@inject IOptionsSnapshot<DatabaseSetting> dbOptions
+
+
+@{
+    var settings = Options.Value;
+    var dbSettings = dbOptions.Value;
+
     ViewData["Title"] = "Home Page";
 }
 
@@ -11,6 +20,13 @@
     string accessUser = $"ユーザー：{ViewData["UserID"]}　ロール：{ViewData["Role"]}　でアクセスしています。";
     <div class="text-center">
         <p>@accessUser</p>
+    </div>
+
+    <div class="">
+        <h1>Setting</h1>
+        <div>@nameof(AppSetteings.Env): @settings.Env</div>
+        <div>@nameof(SettingFile.Database): @settings.SettingFile.Database</div>
+        <div>@nameof(ConnectionStrings.yuta_SampleWeb01Context): @dbSettings.ConnectionStrings.yuta_SampleWeb01Context</div>
     </div>
 }
 

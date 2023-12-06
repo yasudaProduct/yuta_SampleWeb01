@@ -1,5 +1,7 @@
-﻿using Merino.Filters;
+﻿using Merino.config;
+using Merino.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Security.Claims;
 using yuta_SampleWeb01.ViewModels;
@@ -11,13 +13,17 @@ namespace yuta_SampleWeb01.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AppSetteings _setting;
+
+        public HomeController(ILogger<HomeController> logger, IOptionsSnapshot<AppSetteings> optons)
         {
             _logger = logger;
+            _setting = optons.Value;
         }
 
         public IActionResult Index()
         {
+
             string userId = User.FindFirst(ClaimTypes.Name).Value;
             string role = User.FindFirst(ClaimTypes.Role).Value;
             ViewData["UserID"] = userId;

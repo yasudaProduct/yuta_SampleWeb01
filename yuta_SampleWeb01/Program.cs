@@ -9,12 +9,12 @@ using yuta_SampleWeb01.Services;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
+//アプリケーション初期化
+MerinoWebApplication.InitWebApplication(ref builder);
+
 builder.Services.AddDbContext<yuta_SampleWeb01Context>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("yuta_SampleWeb01Context") ?? throw new InvalidOperationException("Connection string 'yuta_SampleWeb01Context' not found.")
 ));
-
-//アプリケーション初期化
-MerinoWebApplication.InitWebApplication(ref builder);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

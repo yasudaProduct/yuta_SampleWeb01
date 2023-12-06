@@ -1,0 +1,8 @@
+{
+  "App": {
+    "Env": "1",
+    "SettingFile": {
+      "Database": "database.json"
+    }
+  }
+}

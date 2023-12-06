@@ -21,13 +21,18 @@ namespace Merino.config
 
     public class DatabaseSetting
     {
-        public ConnectionStrings ConnectionStrings { get; set; }
+        public DataSource DataSource { get; set; }
         
     }
 
-    public class ConnectionStrings
+    public class DataSource
     {
-        public string yuta_SampleWeb01Context { get; set; }
+        public string ConnectionString { get; set; }
+
+        public string CreateDateColum { get; set; }
+
+        public string UpdateDateColum { get; set; }
+
     }
 
 

@@ -1,7 +1,7 @@
 {
   "DatabaseSetting": {
-    "ConnectionStrings": {
-      "yuta_SampleWeb01Context": "Server=(localdb)\\mssqllocaldb;Database=yuta_SampleWeb01.Data;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "DataSource": {
+      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=yuta_SampleWeb01.Data;Trusted_Connection=True;MultipleActiveResultSets=true"
     }
   }
 }

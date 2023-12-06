@@ -30,7 +30,7 @@ namespace yuta_SampleWeb01.Controllers
             ViewData["UserID"] = userId;
             ViewData["Role"] = role;
             return View();
-        }
+        }   
 
         public IActionResult Privacy()
         {

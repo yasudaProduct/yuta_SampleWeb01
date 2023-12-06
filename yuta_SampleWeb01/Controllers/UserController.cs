@@ -4,15 +4,17 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using yuta_SampleWeb01.ViewModels;
 using yuta_SampleWeb01.Services;
 using Merino.Filters;
+using Merino.Controller;
 
 namespace yuta_SampleWeb01.Controllers
 {
-    [TypeFilter(typeof(AccessLogFilter))]
-    public class UserController : Controller
-    {
-        private readonly UserService  _service;
 
-        public UserController(UserService  service)
+    [TypeFilter(typeof(AccessLogFilter))]
+    public class UserController : MerinoController
+    {
+        private readonly IUserService _service;
+
+        public UserController(IUserService service)
         {
             _service = service;
         }
@@ -26,7 +28,7 @@ namespace yuta_SampleWeb01.Controllers
         // GET: UserController/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new UserViewModel());
         }
 
         // POST: UserController/Create

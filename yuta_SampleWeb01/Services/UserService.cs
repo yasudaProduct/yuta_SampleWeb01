@@ -9,7 +9,13 @@ using yuta_SampleWeb01.Services.Businesses;
 
 namespace yuta_SampleWeb01.Services
 {
-    public class UserService : MerinoService
+
+    public interface IUserService
+    {
+        public UserViewModel create(UserViewModel userModel);
+    }
+
+    public class UserService : MerinoService , IUserService
     {
         private readonly yuta_SampleWeb01Context _context;
 

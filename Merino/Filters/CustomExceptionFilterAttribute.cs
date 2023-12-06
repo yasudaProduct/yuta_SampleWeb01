@@ -24,6 +24,8 @@ namespace Merino.Filters
         {
             //_logger.LogError("例外発生：" + context.Exception.Message.ToString() + "\r\n");
             //_logger.LogError(context.Exception.StackTrace);
+            Console.WriteLine("例外発生：" + context.Exception.Message.ToString());
+            Console.WriteLine(context.Exception.StackTrace);
 
             //if (!_hostingEnvironment.IsDevelopment())
             //{

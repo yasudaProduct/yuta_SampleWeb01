@@ -1,4 +1,5 @@
 ﻿using Merino.config;
+using Merino.Controller;
 using Merino.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -8,8 +9,8 @@ using yuta_SampleWeb01.ViewModels;
 
 namespace yuta_SampleWeb01.Controllers
 {
-    [TypeFilter(typeof(AccessLogFilter))]
-    public class HomeController : Controller
+
+    public class HomeController : MerinoController
     {
         private readonly ILogger<HomeController> _logger;
 

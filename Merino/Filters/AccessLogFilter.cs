@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using NLog;
 using NLog.Web;
 using System.Security.Claims;
 
@@ -28,7 +29,7 @@ namespace Merino.Filters
         /// </summary>
         private void OutputAccessLog(FilterContext filterContext, string starOrtEnd)
         {
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            Logger logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
             try
             {
                 var controllerActionDescriptor = filterContext.ActionDescriptor as ControllerActionDescriptor;

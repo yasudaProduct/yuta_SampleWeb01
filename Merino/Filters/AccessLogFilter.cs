@@ -33,7 +33,7 @@ namespace Merino.Filters
             try
             {
                 var controllerActionDescriptor = filterContext.ActionDescriptor as ControllerActionDescriptor;
-                var name = filterContext.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
+                var name = filterContext.HttpContext.User.FindFirst(ClaimTypes.Name) == null ? "no user" : filterContext.HttpContext.User.FindFirst(ClaimTypes.Name).Value;
 
                 logger.Info($"Controller:{controllerActionDescriptor.ControllerName} Action:{controllerActionDescriptor.ActionName} User:{(name ?? "Not User")} {starOrtEnd}");
             }

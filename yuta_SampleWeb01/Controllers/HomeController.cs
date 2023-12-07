@@ -25,10 +25,10 @@ namespace yuta_SampleWeb01.Controllers
         public IActionResult Index()
         {
 
-            string userId = User.FindFirst(ClaimTypes.Name).Value;
-            string role = User.FindFirst(ClaimTypes.Role).Value;
+            string userId = User.FindFirst(nameof(AppCookieDto.Id)).Value;
+            string name = User.FindFirst(nameof(AppCookieDto.Name)).Value;
             ViewData["UserID"] = userId;
-            ViewData["Role"] = role;
+            ViewData["Name"] = name;
             return View();
         }   
 

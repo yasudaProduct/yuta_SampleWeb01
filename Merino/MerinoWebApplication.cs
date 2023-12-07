@@ -1,13 +1,10 @@
 ﻿using Merino.config;
-using Merino.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
-using System;
-using System.Runtime;
 
 namespace Merino
 {

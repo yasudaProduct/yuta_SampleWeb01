@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Merino.Controller;
+using Merino.Dto;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +9,7 @@ using System.Security.Claims;
 namespace yuta_SampleWeb01.Controllers
 {
     [AllowAnonymous]
-    public class AuthenticationController : Controller
+    public class AuthenticationController : MerinoController
     {
 
         private readonly ILogger _logger;
@@ -37,17 +39,11 @@ namespace yuta_SampleWeb01.Controllers
 
             string role = loginId == "admin" ? "Administrator" : "General";
 
-
-
-            var claims = new[] {
-                new Claim(ClaimTypes.Name, loginId),
-                new Claim(ClaimTypes.Role, role),// ユーザID
-            };
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-            //認証cookieをレスポンスに追加
-            await HttpContext.SignInAsync(principal);
+            base.AddCookie<AppCookieDto>(new AppCookieDto() 
+                { 
+                Id = loginId,
+                Name = "めりの", // TODO 
+                });
 
             _logger.LogInformation($"Controller:{nameof(AuthenticationController)} Action:{nameof(AuthenticationController.Login)} User:{loginId} Success!");
 
@@ -76,5 +72,12 @@ namespace yuta_SampleWeb01.Controllers
         {
             return View();
         }
+    }
+
+    public class AppCookieDto : CookieDto
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Role { get; set; }
     }
 }

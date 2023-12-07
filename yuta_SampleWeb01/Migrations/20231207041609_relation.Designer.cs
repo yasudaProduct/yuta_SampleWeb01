@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using yuta_SampleWeb01.Data;
 
@@ -11,9 +12,10 @@ using yuta_SampleWeb01.Data;
 namespace yuta_SampleWeb01.Migrations
 {
     [DbContext(typeof(yuta_SampleWeb01Context))]
-    partial class yuta_SampleWeb01ContextModelSnapshot : ModelSnapshot
+    [Migration("20231207041609_relation")]
+    partial class relation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

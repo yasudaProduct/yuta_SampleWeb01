@@ -30,9 +30,13 @@ namespace yuta_SampleWeb01.Migrations
                 name: "t_data_a",
                 columns: table => new
                 {
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    ccompany_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    user_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    data_cls = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
+                    period_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    download_flg = table.Column<bool>(type: "bit", nullable: false),
                     deleted_flg = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     create_pgm_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     create_user_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -43,7 +47,7 @@ namespace yuta_SampleWeb01.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_t_data_a", x => x.user_id);
+                    table.PrimaryKey("PK_t_data_a", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +76,6 @@ namespace yuta_SampleWeb01.Migrations
                     user_id = table.Column<int>(type: "int", nullable: false),
                     ccompany_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     remarks = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    deleted_flg = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     create_pgm_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     create_user_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     create_date = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -83,6 +86,12 @@ namespace yuta_SampleWeb01.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_t_user_company", x => x.user_id);
+                    table.ForeignKey(
+                        name: "FK_t_user_company_t_user_user_id",
+                        column: x => x.user_id,
+                        principalTable: "t_user",
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
         }
 
@@ -95,10 +104,10 @@ namespace yuta_SampleWeb01.Migrations
                 name: "t_data_a");
 
             migrationBuilder.DropTable(
-                name: "t_user");
+                name: "t_user_company");
 
             migrationBuilder.DropTable(
-                name: "t_user_company");
+                name: "t_user");
         }
     }
 }

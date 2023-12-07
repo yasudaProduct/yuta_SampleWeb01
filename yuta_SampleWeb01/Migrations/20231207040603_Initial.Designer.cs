@@ -12,7 +12,7 @@ using yuta_SampleWeb01.Data;
 namespace yuta_SampleWeb01.Migrations
 {
     [DbContext(typeof(yuta_SampleWeb01Context))]
-    [Migration("20231205171504_Initial")]
+    [Migration("20231207040603_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,15 +24,48 @@ namespace yuta_SampleWeb01.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("yuta_SampleWeb01.Entity.TDataA", b =>
+            modelBuilder.Entity("yuta_SampleWeb01.Models.Movie", b =>
                 {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ccompany_name");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<decimal>("Price")
+                        .HasMaxLength(30)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Rating")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Movie");
+                });
+
+            modelBuilder.Entity("yuta_SampleWeb01.Models.TDataA", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2")
@@ -53,10 +86,6 @@ namespace yuta_SampleWeb01.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("deleted_flg");
 
-                    b.Property<string>("Remarks")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("remarks");
-
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("update_date");
@@ -71,12 +100,33 @@ namespace yuta_SampleWeb01.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("update_user_id");
 
-                    b.HasKey("UserId");
+                    b.Property<int>("dataCls")
+                        .HasColumnType("int")
+                        .HasColumnName("data_cls");
+
+                    b.Property<bool>("downloadFlg")
+                        .HasColumnType("bit")
+                        .HasColumnName("download_flg");
+
+                    b.Property<DateTime>("periodDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_date");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int")
+                        .HasColumnName("status");
+
+                    b.Property<string>("userId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("ID");
 
                     b.ToTable("t_data_a");
                 });
 
-            modelBuilder.Entity("yuta_SampleWeb01.Entity.TUser", b =>
+            modelBuilder.Entity("yuta_SampleWeb01.Models.TUser", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int")
@@ -125,7 +175,7 @@ namespace yuta_SampleWeb01.Migrations
                     b.ToTable("t_user");
                 });
 
-            modelBuilder.Entity("yuta_SampleWeb01.Entity.TUserCompany", b =>
+            modelBuilder.Entity("yuta_SampleWeb01.Models.TUserCompany", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int")
@@ -149,11 +199,6 @@ namespace yuta_SampleWeb01.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("create_user_id");
-
-                    b.Property<string>("DeletedFlg")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("deleted_flg");
 
                     b.Property<string>("Remarks")
                         .IsRequired()
@@ -179,39 +224,21 @@ namespace yuta_SampleWeb01.Migrations
                     b.ToTable("t_user_company");
                 });
 
-            modelBuilder.Entity("yuta_SampleWeb01.Models.Movie", b =>
+            modelBuilder.Entity("yuta_SampleWeb01.Models.TUserCompany", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("yuta_SampleWeb01.Models.TUser", "User")
+                        .WithOne("UserCompany")
+                        .HasForeignKey("yuta_SampleWeb01.Models.TUserCompany", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Navigation("User");
+                });
 
-                    b.Property<string>("Genre")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<decimal>("Price")
-                        .HasMaxLength(30)
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Rating")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Movie");
+            modelBuilder.Entity("yuta_SampleWeb01.Models.TUser", b =>
+                {
+                    b.Navigation("UserCompany")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

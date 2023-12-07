@@ -5,9 +5,6 @@ namespace yuta_SampleWeb01.Models
 {
     public class BaseEntity
     {
-        [Column("deleted_flg")]
-        [Required]
-        public string? DeletedFlg { get; set; }
 
         [Column("create_pgm_id")]
         [Required]

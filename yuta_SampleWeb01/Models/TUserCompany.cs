@@ -19,5 +19,8 @@ namespace yuta_SampleWeb01.Models
         [Column("remarks")]
         public string Remarks { get; set; }
 
+        
+        public TUser User { get; set; }
+
     }
 }

@@ -43,7 +43,6 @@ namespace yuta_SampleWeb01.Services.Businesses
                 UserId = userModel.UserId,
                 CompanyName = userModel.CompanyName,
                 Remarks = userModel.Remarks,
-                DeletedFlg = "0",
                 CreateDate = new DateTime(),
                 CreateUserId = "test",
                 CreatePgmId = "test",

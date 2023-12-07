@@ -16,5 +16,12 @@ namespace yuta_SampleWeb01.Models
         [Required]
         public string Password { get; set; }
 
+        [Column("deleted_flg")]
+        [Required]
+        public string? DeletedFlg { get; set; }
+
+
+        public TUserCompany UserCompany { get; set; }
+
     }
 }

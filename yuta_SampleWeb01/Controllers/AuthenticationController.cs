@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using yuta_SampleWeb01.Models;
+using yuta_SampleWeb01.Services;
 
 namespace yuta_SampleWeb01.Controllers
 {
@@ -14,9 +16,12 @@ namespace yuta_SampleWeb01.Controllers
 
         private readonly ILogger _logger;
 
-        public AuthenticationController(ILogger<AuthenticationController> logger)
+        private readonly IAuthService _service;
+
+        public AuthenticationController(ILogger<AuthenticationController> logger, IAuthService service)
         {
             _logger = logger;
+            _service = service;
         }
 
 
@@ -32,24 +37,27 @@ namespace yuta_SampleWeb01.Controllers
         {
 
             //認証処理
-
-            if (string.IsNullOrWhiteSpace(loginId) || string.IsNullOrWhiteSpace(password))
+            TUser user = _service.Auth(loginId, password);
+            if(user == null)
             {
                 ModelState.AddModelError(string.Empty, "ログイン情報に誤りがあります。");
                 return View("Index");
             }
 
+            //ユーザー情報取得 (Authに入れてもいいかも)
+            //TODO Userテーブルが分かれていた場合どっちのテーブルから取得するの？ 区分を設けなきゃ？
+
             string role = loginId == "admin" ? "Administrator" : "General";
 
+            //認証Cookie作成
             base.AddCookie<AppCookieDto>(new AppCookieDto() 
                 { 
                 Id = loginId,
-                Name = "めりの", // TODO 
+                Name = "めりの", // TODO
                 });
 
             _logger.LogInformation($"Controller:{nameof(AuthenticationController)} Action:{nameof(AuthenticationController.Login)} User:{loginId} Success!");
 
-            // 認証されたらHomeページへリダイレクトする
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 

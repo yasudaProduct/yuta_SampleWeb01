@@ -21,6 +21,12 @@ namespace yuta_SampleWeb01.Services
         /// </summary>
         /// <returns></returns>
         public List<TDataA> getDataList();
+
+        /// <summary>
+        /// DataA検索
+        /// </summary>
+        /// <returns></returns>
+        public List<TDataA> searchDataList(string cond);
     }
 
     public class DataAService : MerinoService , IDataAService
@@ -35,7 +41,7 @@ namespace yuta_SampleWeb01.Services
         }
 
         /// <summary>
-        /// ユーザーを登録する
+        /// 
         /// </summary>
         /// <param name="userModel"></param>
         /// <returns></returns>
@@ -57,5 +63,28 @@ namespace yuta_SampleWeb01.Services
 
             return dataList;
         }
+
+        public List<TDataA> searchDataList(string cond)
+        {
+
+            List<TDataA> dataList = null;
+
+            //トランザクション
+            using (var tran = _context.Database.BeginTransaction())
+            {
+
+                //データ取得
+                dataList = _context.TDataA
+                    .Include(d => d.UserCompany)
+                    .Where(c =>
+                    c.DeletedFlg == "0"
+                    && c.status != Status.completion
+                    && c.UserCompany.CompanyName == cond)
+                    .ToList<TDataA>();
+            };
+
+            return dataList;
+        }
+        
     }
 }

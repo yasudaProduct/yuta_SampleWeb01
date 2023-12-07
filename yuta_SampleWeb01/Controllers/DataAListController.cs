@@ -17,18 +17,40 @@ namespace yuta_SampleWeb01.Controllers
         }
 
         // GET: DataAListController
-        public ActionResult Index()
+        public async Task<ActionResult> Index(string userIdCond)
         {
             DataListViewModel viewModel = new DataListViewModel();
+            List<TDataA> dataAList = null;
 
-            //データ取得
-            List<TDataA>  dataAList = _service.getDataList();
+            if(userIdCond == null)
+            {
+                //データ取得
+               dataAList = _service.getDataList();
+            }
+            else
+            {
+                //データ取得
+                dataAList = _service.searchDataList(userIdCond);
+            }          
 
             //ViewModelにセット
             viewModel.DataA = dataAList;
 
             return View(viewModel);
         }
+
+        //public async Task<ActionResult> Index(string userIdCond)
+        //{
+        //    DataListViewModel viewModel = new DataListViewModel();
+
+        //    //データ取得
+        //    List<TDataA> dataAList = _service.searchDataList(userIdCond);
+
+        //    //ViewModelにセット
+        //    viewModel.DataA = dataAList;
+
+        //    return View(viewModel);
+        //}
 
         // GET: DataAListController/Details/5
         public ActionResult Details(int id)

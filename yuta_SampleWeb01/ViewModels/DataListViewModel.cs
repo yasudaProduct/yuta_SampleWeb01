@@ -10,6 +10,8 @@ namespace yuta_SampleWeb01.ViewModels
 
         public List<TDataA> DataA { get; set; }
 
+        public string? UserIdCond { get; set; }
+
         //[Required]
         //public int DataId { get; set; }
 

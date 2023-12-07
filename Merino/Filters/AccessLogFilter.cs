@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Controllers;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
 using System.Security.Claims;
@@ -8,12 +10,19 @@ namespace Merino.Filters
 {
     public class AccessLogFilter : IActionFilter
     {
+        private readonly ILogger<AccessLogFilter> _logger;
+
+        public AccessLogFilter(ILogger<AccessLogFilter> logger)
+        {
+            _logger = logger;
+        }
+
         /// <summary>
         /// アクションメソッド実行前の処理
         /// </summary>
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            OutputAccessLog(filterContext, "Start");
+            _logger.LogTrace(getControllerName(filterContext) + "_" + getActionName(filterContext)+ "▼▼Start▼▼");
         }
 
         /// <summary>
@@ -21,7 +30,7 @@ namespace Merino.Filters
         /// </summary>
         public void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            OutputAccessLog(filterContext, "End");
+            _logger.LogTrace(getControllerName(filterContext) + "_" + getActionName(filterContext) + "▲▲End▲▲");
         }
 
         /// <summary>
@@ -41,6 +50,27 @@ namespace Merino.Filters
             {
                 logger.Error("\r\n" + "ログ出力時にエラーが発生しました。" + ex);
             }
+        }
+
+        private string getControllerName(ActionExecutingContext filterContext)
+        {
+            var routeData = filterContext.RouteData;
+            return routeData.Values["controller"].ToString();
+        }
+        private string getActionName(ActionExecutingContext filterContext)
+        {
+            var routeData = filterContext.RouteData;
+            return routeData.Values["action"].ToString();
+        }
+        private string getControllerName(ActionExecutedContext filterContext)
+        {
+            var routeData = filterContext.RouteData;
+            return routeData.Values["controller"].ToString();
+        }
+        private string getActionName(ActionExecutedContext filterContext)
+        {
+            var routeData = filterContext.RouteData;
+            return routeData.Values["action"].ToString();
         }
     }
 }

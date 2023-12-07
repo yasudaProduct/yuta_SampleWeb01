@@ -31,6 +31,8 @@ namespace yuta_SampleWeb01.Controllers
         public async Task<IActionResult> Login(string loginId, string password)
         {
 
+            //認証処理
+
             if (string.IsNullOrWhiteSpace(loginId) || string.IsNullOrWhiteSpace(password))
             {
                 ModelState.AddModelError(string.Empty, "ログイン情報に誤りがあります。");

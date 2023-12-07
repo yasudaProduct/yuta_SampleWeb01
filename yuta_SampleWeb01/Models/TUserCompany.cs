@@ -22,5 +22,7 @@ namespace yuta_SampleWeb01.Models
         
         public TUser User { get; set; }
 
+        public ICollection<TDataA> DataA { get; set; }
+
     }
 }

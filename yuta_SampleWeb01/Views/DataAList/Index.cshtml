@@ -1,0 +1,69 @@
+﻿@*@model IEnumerable<yuta_SampleWeb01.Models.TDataA>*@
+@model yuta_SampleWeb01.ViewModels.DataListViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                    @Html.DisplayNameFor(model => model.DataA![0].userId)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.DataA![0].dataCls)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.DataA![0].status)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.DataA![0].periodDate)
+            </th>
+            <th>
+                    @Html.DisplayNameFor(model => model.DataA![0].downloadFlg)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model.DataA!)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.userId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dataCls)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.periodDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.downloadFlg)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>

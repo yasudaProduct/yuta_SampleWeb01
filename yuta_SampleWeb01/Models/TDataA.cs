@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static yuta_SampleWeb01.Const.Const;
 
 namespace yuta_SampleWeb01.Models
 {
@@ -7,35 +8,23 @@ namespace yuta_SampleWeb01.Models
     public class TDataA : BaseEntity
     {
 
-        public enum dataCle
-        {
-            DataA = 1,
-            DataB = 2,
-            DataC = 3,
-        }
-
-        public enum Status
-        {
-            Registration = 1,
-            Entry = 2,
-            completion = 3,
-        }
-
         [Key]
         [Required]
         public int ID { get; set; }
 
         [Column("user_id")]
         [Required]
-        public string userId { get; set; }
+        public int userId { get; set; }
 
         [Column("data_cls")]
         [Required]
-        public dataCle dataCls { get; set; }
+        public DataCls dataCls { get; set; }
+        //TODO enumで定義するとint型になる
+        //https://qiita.com/noobow/items/2083affa1c6f766e7a55
 
         [Column("status")]
         [Required]
-        public dataCle status { get; set; }
+        public Status status { get; set; }
 
         [Column("period_date")]
         [Required]
@@ -50,5 +39,7 @@ namespace yuta_SampleWeb01.Models
         public string? DeletedFlg { get; set; }
 
         public ICollection<TDataADetail> DataADetail { get; set; }
+
+        public TUserCompany UserCompany { get; set; }
     }
 }

@@ -31,6 +31,14 @@ namespace yuta_SampleWeb01.Data
                 .HasForeignKey<TUserCompany>(uc => uc.UserId);
             });
 
+            //1対多 UserCompany =< DataADetail
+            modelBuilder.Entity<TUserCompany>(entity =>
+            {
+                entity.HasMany(u => u.DataA)
+                .WithOne(d => d.UserCompany)
+                .HasForeignKey(d => d.userId);
+            });
+
             //1対多 DataA =< DataADetail
             modelBuilder.Entity<TDataA>(entity =>
             {
@@ -38,6 +46,7 @@ namespace yuta_SampleWeb01.Data
                 .WithOne(de => de.DataA)
                 .HasForeignKey(de => de.DataId);
             });
+
         }
     }
 }

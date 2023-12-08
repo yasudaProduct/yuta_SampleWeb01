@@ -63,3 +63,4 @@ app.MapControllerRoute(
     pattern: "{controller=Authentication}/{action=Login}/{id?}");
 
 app.Run();
+//TODO ここらへんもMerinoに移せる？

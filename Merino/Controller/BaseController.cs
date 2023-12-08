@@ -30,7 +30,7 @@ namespace Merino.Controller
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="dto"></param>
-        async public void AddCookie<T>(T dto)
+        async protected void AddCookie<T>(T dto)
         {
             List<Claim> claimList = new List<Claim>();
 
@@ -55,7 +55,28 @@ namespace Merino.Controller
 
             //認証cookieをレスポンスに追加
             await HttpContext.SignInAsync(principal);
+
         }
 
+        /// <summary>
+        /// セッションに保存
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        async protected void AddSettion(string key,string value)
+        {
+            //セッション保存
+            HttpContext.Session.SetString(key, value);
+        }
+        /// <summary>
+        /// セッションから取得
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>string or null</returns>
+        protected string GetSettion(string key)
+        {
+            //セッション保存
+            return HttpContext.Session.GetString(key);
+        }
     }
 }

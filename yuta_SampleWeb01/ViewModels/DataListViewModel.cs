@@ -10,7 +10,19 @@ namespace yuta_SampleWeb01.ViewModels
 
         public List<TDataA> DataA { get; set; }
 
-        public string? UserIdCond { get; set; }
+        //public string? UserIdCond { get; set; }
+
+        //public string? CompanyNameCond { get; set; }
+
+        public SearchCond SearchCondition;
+
+        public class SearchCond
+        {
+
+            public string? UserIdCond { get; set; }
+
+            public string? CompanyNameCond { get; set; }
+        }
 
         //[Required]
         //public int DataId { get; set; }

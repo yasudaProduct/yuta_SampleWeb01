@@ -17,21 +17,16 @@ namespace yuta_SampleWeb01.Controllers
         }
 
         // GET: DataAListController
-        public async Task<ActionResult> Index(string? userIdCond)
+        public async Task<ActionResult> Index(DataListViewModel model)
         {
             DataListViewModel viewModel = new DataListViewModel();
             List<TDataA> dataAList = null;
 
-            if (userIdCond == null)
+            if (model.SearchCondition == null)
             {
                 //セッション取得
-                // TODO Merinoに記載
                 // TODO オブジェクトのセッション管理 Jsonになる？
                 // TODO 検索条件等ではセッションを使わず、クライアント側のsessionStorageを使うのがいい？
-                if (false == String.IsNullOrEmpty(HttpContext.Session.GetString("key")))
-                {
-                    userIdCond = HttpContext.Session.GetString("key");
-                }
 
                 //データ取得
                 dataAList = _service.getDataList();
@@ -39,10 +34,10 @@ namespace yuta_SampleWeb01.Controllers
             else
             {
                 //データ取得
-                dataAList = _service.searchDataList(userIdCond);
+                dataAList = _service.searchDataList(model.SearchCondition.CompanyNameCond);
 
                 //セッション保存
-                HttpContext.Session.SetString("key", userIdCond);
+                //base.AddSettion("key", userIdCond);
             }          
 
             //ViewModelにセット

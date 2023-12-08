@@ -19,7 +19,10 @@
     </p>
     <form asp-controller="DataAList" asp-action="Index" method="get">
         <p>
-            企業名: <input type="text" name="userIdCond" />
+            @*企業名: <input type="text" name="@Html.DisplayNameFor(model => model.SearchCondition.CompanyNameCond)" />
+            ユーザーId: <input type="text" name="@Html.DisplayNameFor(model => model.SearchCondition.UserIdCond)" />*@
+            企業名: <input type="text" name="@Html.DisplayNameFor(model => model.SearchCondition.CompanyNameCond)" />
+            ユーザーId: <input type="text" name="@Html.DisplayNameFor(model => model.SearchCondition.UserIdCond)" />
             <input type="submit" value="Filter" />
         </p>
     </form>

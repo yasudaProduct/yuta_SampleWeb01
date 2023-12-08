@@ -19,8 +19,6 @@
     </p>
     <form asp-controller="DataAList" asp-action="Index" method="get">
         <p>
-            @*企業名: <input type="text" name="@Html.DisplayNameFor(model => model.SearchCondition.CompanyNameCond)" />
-            ユーザーId: <input type="text" name="@Html.DisplayNameFor(model => model.SearchCondition.UserIdCond)" />*@
             企業名: <input asp-for="SearchCondition.CompanyNameCond" type="text" />
             ユーザーId: <input asp-for="SearchCondition.UserIdCond" type="text" />
             <input type="submit" value="Filter" />

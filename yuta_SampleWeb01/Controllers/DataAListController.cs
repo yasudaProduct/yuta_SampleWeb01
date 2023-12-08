@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using yuta_SampleWeb01.Models;
 using yuta_SampleWeb01.Services;
 using yuta_SampleWeb01.ViewModels;
+using static yuta_SampleWeb01.ViewModels.DataListViewModel;
 
 namespace yuta_SampleWeb01.Controllers
 {
@@ -25,12 +26,20 @@ namespace yuta_SampleWeb01.Controllers
             if (model.SearchCondition == null)
             {
                 //セッション取得
-                // TODO オブジェクトのセッション管理 Jsonになる？
                 // TODO 検索条件等ではセッションを使わず、クライアント側のsessionStorageを使うのがいい？
                 // TODO 画面単位でセッションを管理する？？
+                SearchCond cond =  HttpContext.Session.Get<SearchCond>("key");
 
-                //データ取得
-                dataAList = _service.getDataList();
+                if (cond == null)
+                {
+                    //データ取得
+                    dataAList = _service.getDataList();
+                }
+                else
+                {
+                    dataAList = _service.searchDataList(cond.CompanyNameCond);
+                }
+
             }
             else
             {
@@ -38,7 +47,9 @@ namespace yuta_SampleWeb01.Controllers
                 dataAList = _service.searchDataList(model.SearchCondition.CompanyNameCond);
 
                 //セッション保存
-                //base.AddSettion("key", userIdCond);
+                base.AddSettion("key", userIdCond);
+
+                HttpContext.Session.Set("key", new SearchCond());
             }          
 
             //ViewModelにセット

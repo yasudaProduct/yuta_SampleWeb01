@@ -69,6 +69,17 @@ namespace Merino.Controller
             HttpContext.Session.SetString(key, value);
         }
         /// <summary>
+        /// セッションに保存
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="type"></param>
+        async protected void AddSettion<T>(string key, T type)
+        {
+            //セッション保存
+            HttpContext.Session.Set(key, type);
+        }
+        /// <summary>
         /// セッションから取得
         /// </summary>
         /// <param name="key"></param>
@@ -77,6 +88,18 @@ namespace Merino.Controller
         {
             //セッション保存
             return HttpContext.Session.GetString(key);
+        }
+        /// <summary>
+        /// セッションから取得
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        protected string Get<T>(string key)
+        {
+            var type = typeof(T);
+            //セッション保存
+            //return HttpContext.Session.Get<typeof(T)> (key);
         }
     }
 }

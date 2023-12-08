@@ -27,6 +27,7 @@ namespace yuta_SampleWeb01.Controllers
                 //セッション取得
                 // TODO オブジェクトのセッション管理 Jsonになる？
                 // TODO 検索条件等ではセッションを使わず、クライアント側のsessionStorageを使うのがいい？
+                // TODO 画面単位でセッションを管理する？？
 
                 //データ取得
                 dataAList = _service.getDataList();

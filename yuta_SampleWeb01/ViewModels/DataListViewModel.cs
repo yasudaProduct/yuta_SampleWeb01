@@ -14,7 +14,7 @@ namespace yuta_SampleWeb01.ViewModels
 
         //public string? CompanyNameCond { get; set; }
 
-        public SearchCond SearchCondition;
+        public SearchCond SearchCondition { get; set; }
 
         public class SearchCond
         {

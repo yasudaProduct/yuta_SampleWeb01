@@ -41,7 +41,7 @@ namespace yuta_SampleWeb01.Controllers
             if(user == null)
             {
                 ModelState.AddModelError(string.Empty, "ログイン情報に誤りがあります。");
-                return View("Index");
+                return View();
             }
 
             //ユーザー情報取得 (Authに入れてもいいかも)

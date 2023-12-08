@@ -15,10 +15,11 @@
 <body>
     <p>
         <a asp-action="Create">Create New</a>
+        <a asp-controller="Home" asp-action="Index" >Home</a>
     </p>
     <form asp-controller="DataAList" asp-action="Index" method="get">
         <p>
-            UserId: <input type="text" name="userIdCond" />
+            企業名: <input type="text" name="userIdCond" />
             <input type="submit" value="Filter" />
         </p>
     </form>

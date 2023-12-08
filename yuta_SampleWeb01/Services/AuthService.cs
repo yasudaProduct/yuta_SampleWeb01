@@ -54,10 +54,16 @@ namespace yuta_SampleWeb01.Services
             using (var tran = _context.Database.BeginTransaction())
             {
 
+                try { 
                 //データ取得
                 dataList = _context.TUser
                     .Where(u => u.DeletedFlg == "0" && u.UserId == int.Parse(userId) && u.Password == password)
                     .ToList();
+                }
+                catch(Exception ex)
+                {
+                    
+                }
             };
             
             return dataList.FirstOrDefault();

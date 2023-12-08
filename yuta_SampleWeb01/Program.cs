@@ -56,6 +56,8 @@ app.UseAuthorization();
 //app.MapRazorPages();
 //app.MapDefaultControllerRoute();
 
+app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Authentication}/{action=Login}/{id?}");

@@ -45,6 +45,10 @@ namespace Merino
                     //.WithSingletonLifetime());
                     .WithScopedLifetime());
 
+                //セッション
+                builder.Services.AddSession(options => {
+                    options.Cookie.Name = "MerinoSession";
+                });
 
             }
             catch (FileNotFoundException ex)

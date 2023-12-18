@@ -1,4 +1,9 @@
 ﻿
+- ルーティング
+- ログ
+- 例外処理
+- テスト
+- デプロイ
 
 ### EntityFramework DbContext トランザクション
 - トランザクションなしの場合
@@ -31,3 +36,17 @@ dotnet ef migrations add Initial
 // DBを更新する
 dotnet ef database update
 ```
+
+### フォルダ構成
+- config
+- Const
+- Controllers
+- Data
+- Migrations
+- Models
+- Services
+- ViewModels
+- Views
+- appsettings.json
+- nlog.config
+- Program.cs

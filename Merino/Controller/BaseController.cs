@@ -95,11 +95,11 @@ namespace Merino.Controller
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <returns></returns>
-        protected string Get<T>(string key)
+        protected T GetSession<T>(string key)
         {
             var type = typeof(T);
-            //セッション保存
-            //return HttpContext.Session.Get<typeof(T)> (key);
+            //セッション取得
+            return HttpContext.Session.Get<T> (key);
         }
     }
 }

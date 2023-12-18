@@ -28,7 +28,8 @@ namespace yuta_SampleWeb01.Controllers
                 //セッション取得
                 // TODO 検索条件等ではセッションを使わず、クライアント側のsessionStorageを使うのがいい？
                 // TODO 画面単位でセッションを管理する？？
-                SearchCond cond =  HttpContext.Session.Get<SearchCond>("key");
+                //SearchCond cond =  HttpContext.Session.Get<SearchCond>("key");
+                SearchCond cond =  base.GetSession<SearchCond>("key");
 
                 if (cond == null)
                 {
@@ -47,9 +48,10 @@ namespace yuta_SampleWeb01.Controllers
                 dataAList = _service.searchDataList(model.SearchCondition.CompanyNameCond);
 
                 //セッション保存
-                base.AddSettion("key", userIdCond);
+                //base.AddSettion("key", userIdCond);
 
-                HttpContext.Session.Set("key", new SearchCond());
+                //HttpContext.Session.Set("key", new SearchCond());
+                base.AddSettion<SearchCond>("key", model.SearchCondition);
             }          
 
             //ViewModelにセット

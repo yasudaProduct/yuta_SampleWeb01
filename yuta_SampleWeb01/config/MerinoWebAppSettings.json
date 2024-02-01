@@ -1,8 +1,40 @@
 {
-  "App": {
-    "Env": "1",
+  "MerinoSettings": {
     "SettingFile": {
-      "Database": "database.json"
+      "Application": "application.json",
+      "Database": "database.json",
+      "Nlog": "Nlog.config"
+    },
+    "InjectionAssemblyName": "WebMvcSampleLibrary",
+    "CustomSettingFile": [
+      {
+        "AssemblyName": "WebMvcSampleLibrary",
+        "ClassName": "WebMvcSampleLibrary.Util.WebMvcSampleSetting",
+        "FileName": "WebMvcSampleSetting.json"
+      }
+    ],
+    "Env": 1,
+    "EnvSetting": [
+      {
+        "EnvCls": 1,
+        "EnvName": ""
+      },
+      {
+        "EnvCls": 2,
+        "EnvName": "develop"
+      },
+      {
+        "EnvCls": 3,
+        "EnvName": "st"
+      },
+      {
+        "EnvCls": 4,
+        "EnvName": "prod"
+      }
+    ],
+    "Web": {
+      "CustomErrorPage": "/Home/Error",
+      "RootUrlPattern": "{controller=Home}/{action=Index}/{id?}"
     }
   }
 }

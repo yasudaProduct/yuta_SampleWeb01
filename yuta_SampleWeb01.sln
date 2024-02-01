@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yuta_SampleWeb01", "yuta_Sa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Merino", "merino\Merino.csproj", "{18BF007A-92F9-4DCF-B81A-899187606396}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UT_TEST", "UT_TEST\UT_TEST.csproj", "{479A32D1-E8BD-460F-9DEA-D517E34FC2D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UT_TEST", "UT_TEST\UT_TEST.csproj", "{479A32D1-E8BD-460F-9DEA-D517E34FC2D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

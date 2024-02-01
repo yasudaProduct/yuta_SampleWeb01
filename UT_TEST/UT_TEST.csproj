@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\yuta_SampleWeb01\yuta_SampleWeb01.csproj" />
+    <ProjectReference Include="..\SampleWeb01\SampleWeb01.csproj" />
   </ItemGroup>
 
 </Project>

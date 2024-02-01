@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using yuta_SampleWeb01.Controllers;
-using yuta_SampleWeb01.Services;
-using yuta_SampleWeb01.ViewModels;
+using SampleWeb01.Controllers;
+using SampleWeb01.Services;
+using SampleWeb01.ViewModels;
 
 namespace UT_TEST.Controller
 {

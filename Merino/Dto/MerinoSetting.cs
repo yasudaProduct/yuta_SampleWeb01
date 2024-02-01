@@ -1,4 +1,4 @@
-﻿using static Merino.Const.AppConst;
+﻿using static Merino.Const.FWConst;
 
 namespace Merino.Settings
 {

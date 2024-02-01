@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\merino\Merino.csproj" />
+    <ProjectReference Include="..\SampleWeb01.Infrastructure\SampleWeb01.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

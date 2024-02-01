@@ -7,11 +7,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System.Reflection;
-using static Merino.Const.AppConst;
+using static Merino.Const.FWConst;
 
 //TODO staticとインスタンスパフォーマンスどちらが良いか
 //TODO 環境ごとの設定ファイルの切替えを起動時とビルド時どちらが良いか検討
 //     →ビルド変数に合わせた方がよさそう。
+//TODO FW側でDBプロパイダに対応しようとすると不要なdllが配置される
+//     →プロジェクトを分ける？
 
 namespace Merino
 {
@@ -266,6 +268,10 @@ namespace Merino
                     case DbProvider.PostgreSQL:
                         //PostgreSQL実行Action作成 AddDbContextの引数用
                         action = delegate (DbContextOptionsBuilder op) { op.UseNpgsql(setting.ConnectionString); };
+                        break;
+                    case DbProvider.UseInMemoryDatabase:
+                        //PostgreSQL実行Action作成 AddDbContextの引数用
+                        action = delegate (DbContextOptionsBuilder op) { op.UseInMemoryDatabase("InMemory"); };
                         break;
                     default: throw new InvalidOperationException();
                 }

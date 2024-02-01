@@ -88,4 +88,5 @@ namespace Merino.Settings
         public string ContextClassName { get; set; }
 
     }
+}
 

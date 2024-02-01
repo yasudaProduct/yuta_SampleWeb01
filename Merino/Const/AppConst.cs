@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Merino.Const
 {
-    internal class AppConst
+    public class AppConst
     {
 
         public enum env
@@ -17,6 +17,12 @@ namespace Merino.Const
             ST = 4,
             UAT = 5,
             PROD = 6
+        }
+
+        public enum DbProvider
+        {
+            SqlServer = 1,
+            PostgreSQL = 2
         }
     }
 }

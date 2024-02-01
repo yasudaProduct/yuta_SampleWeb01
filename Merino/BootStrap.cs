@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Web;
 using System.Reflection;
+using static Merino.Const.AppConst;
 
 namespace Merino
 {

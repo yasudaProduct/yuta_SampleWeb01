@@ -5,10 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NLog;
 using NLog.Web;
 using System.Reflection;
 using static Merino.Const.AppConst;
+
+//TODO staticとインスタンスパフォーマンスどちらが良いか
+//TODO 環境ごとの設定ファイルの切替えを起動時とビルド時どちらが良いか検討
+//     →ビルド変数に合わせた方がよさそう。
 
 namespace Merino
 {
@@ -32,9 +35,9 @@ namespace Merino
 
         #endregion
 
-        public static NLog.Logger _logger;
+        private static NLog.Logger _logger;
 
-        public static MerinoSettings _setting;
+        private static MerinoSettings _setting;
 
         /// <summary>
         /// BuildWebApplication
@@ -45,9 +48,15 @@ namespace Merino
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //_logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+            //NLog取得 当クラスのみで使用するインスタンス
+            if (!File.Exists(Path.Combine(CONF_FOLDER_NAME, NLOG_CONF_FILE_NAME))) throw new DirectoryNotFoundException("設定ファイルが見つかりません。:" + Path.Combine(CONF_FOLDER_NAME, NLOG_CONF_FILE_NAME));
             _logger = NLogBuilder.ConfigureNLog(Path.Combine(CONF_FOLDER_NAME, NLOG_CONF_FILE_NAME)).GetCurrentClassLogger();
             _logger.Trace("▽MerinoWebApplication InitWebApplication▽");
+
+            //Nlog登録
+            builder.Logging.ClearProviders();
+            builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+            builder.Host.UseNLog();
 
             //設定ファイル読み込み
             InitAppSettings(ref builder);
@@ -60,15 +69,10 @@ namespace Merino
             //        builder.Environment.EnvironmentName = env.EnvName;
             //        break;
             //    }
-            //}
-
-            //Nlog登録
-            builder.Logging.ClearProviders();
-            builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-            builder.Host.UseNLog();
+            //}            
 
             //Database設定
-            DatabaseSetting dbSetting = builder.Configuration.GetSection(nameof(DatabaseSetting)).Get<DatabaseSetting>();
+            DatabaseSetting dbSetting = builder.Configuration.GetSection(nameof(DatabaseSetting)).Get<DatabaseSetting>() ?? throw new ArgumentNullException(nameof(DatabaseSetting));
 
             //EntityFrameworkが有効なDataSource設定を取得
             var dataSourceList = dbSetting.DataSources.DataSource.Where(m => m.EntityFramework != null).ToList();
@@ -148,11 +152,6 @@ namespace Merino
             {
                 app.Run();
             }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "例外のためにプログラムを停止しました。");
-                throw ex;
-            }
             finally
             {
                 NLog.LogManager.Shutdown();
@@ -164,59 +163,8 @@ namespace Merino
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static WebApplicationBuilder InitWebApplication(ref WebApplicationBuilder builder)
-        {
 
-            try
-            {
-                _logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-                //_logger = NLogBuilder.ConfigureNLog(Path.Combine(CONF_FOLDER_NAME, NLOG_CONF_FILE_NAME)).GetCurrentClassLogger();
-                _logger.Trace("▽MerinoWebApplication InitWebApplication▽");
-
-                //設定ファイル読み込み
-                InitAppSettings(ref builder);
-
-                //Nlog登録
-                builder.Logging.ClearProviders();
-                builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                builder.Host.UseNLog();
-
-                //依存注入 https://github.com/khellang/Scrutor/tree/master
-                builder.Services.Scan(scan =>
-                    scan.FromEntryAssembly()
-                    //.AddClasses(classes => classes.InNamespaces("Services"))
-                    .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service") || type.Name.EndsWith("Repository") || type.Name.EndsWith("Dao")))
-                    //.UsingRegistrationStrategy(Scrutor.RegistrationStrategy.Skip)
-                    .AsSelfWithInterfaces()
-                    //.WithSingletonLifetime());
-                    .WithScopedLifetime());
-
-                //セッション
-                builder.Services.AddSession(options =>
-                {
-                    options.Cookie.Name = "MerinoSession";
-                });
-
-            }
-            catch (FileNotFoundException ex)
-            {
-                _logger.Error(ex, "設定ファイルが見つかりませんでした。");
-                throw ex;
-            }
-
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "例外のためにプログラムを停止しました。");
-                throw ex;
-            }
-            finally
-            {
-                //NLog.LogManager.Shutdown();
-            }
-
-            _logger.Trace("△MerinoWebApplication InitWebApplication△");
-            return builder;
-        }
+        #region private methods
 
         #region 設定ファイル初期化
         /// <summary>
@@ -227,36 +175,28 @@ namespace Merino
             _logger.Trace("▽MerinoWebApplication InitAppSettings▽");
 
             //merino.json
+            if(!File.Exists(Path.Combine(CONF_FOLDER_NAME, CONF_FILE_NAME))) throw new DirectoryNotFoundException("設定ファイルが見つかりません。:" + Path.Combine(CONF_FOLDER_NAME, CONF_FILE_NAME));
             builder.Configuration.AddJsonFile(Path.Combine(CONF_FOLDER_NAME, CONF_FILE_NAME), optional: false, reloadOnChange: true);
             builder.Services.Configure<MerinoSettings>(builder.Configuration.GetSection(nameof(MerinoSettings)));
-
-            _setting = builder.Configuration.GetSection(nameof(MerinoSettings)).Get<MerinoSettings>();
-            var settingFile = _setting.SettingFile;
+            _setting = builder.Configuration.GetSection(nameof(MerinoSettings)).Get<MerinoSettings>() ?? throw new ArgumentNullException(nameof(MerinoSettings));
+            SettingFile settingFile = _setting.SettingFile;
 
             //環境取得
-            var env = _setting.Env;
-            var envSetting = _setting.EnvSetting;
-            var envName = envSetting.Find(v => v.EnvCls == env).EnvName;
+            string? env = _setting.Env;
+            List<EnvSetting>? envSetting = _setting.EnvSetting;
+            string? envName = null;
+            if (env != null && envSetting != null) envName = envSetting.Find(v => v.EnvCls == env).EnvName;
 
             //database.json
-            string fileName = Path.Combine(CONF_FOLDER_NAME, settingFile.Database);
+            string databaseFileName = "";
+            if (!string.IsNullOrEmpty(settingFile.Database))
+            {
+                databaseFileName = Path.Combine(CONF_FOLDER_NAME, EnvSettingFileName(envName, settingFile.Database));
+                builder.Configuration.AddJsonFile(databaseFileName, optional: false, reloadOnChange: true);
+                builder.Services.Configure<DatabaseSetting>(builder.Configuration.GetSection(nameof(DatabaseSetting)));
+            }
 
-            //未実装 フレームワークでは管理しない
-            //if (!String.IsNullOrEmpty(envName))
-            //{
-            //    //環境に合わせて読込ファイル名を作成する
-            //    settingFile.Database.Split('.').Last();
-            //    fileName = Path.Combine(CONF_FOLDER_NAME, string.Join(".", settingFile.Database.Split('.').First(),envName ,settingFile.Database.Split('.').Last()));
-            //}
-            //else
-            //{
-            //    fileName = Path.Combine(CONF_FOLDER_NAME, settingFile.Database);
-            //}
-            builder.Configuration.AddJsonFile(fileName, optional: false, reloadOnChange: true);
-            builder.Services.Configure<DatabaseSetting>(builder.Configuration.GetSection(nameof(DatabaseSetting)));
-
-
-            //独自設定ファイル読込
+            //アプリケーション固有設定ファイル読込
             List<CustomSettingFile> customSettingFiles = builder.Configuration.GetSection(nameof(MerinoSettings) + ":" + nameof(CustomSettingFile)).Get<List<CustomSettingFile>>();
             if (customSettingFiles != null)
             {
@@ -274,8 +214,10 @@ namespace Merino
                         throw new InvalidOperationException();
                     }
 
+                    string fileName = Path.Combine(CONF_FOLDER_NAME, EnvSettingFileName(envName, item.FileName));
+
                     var instance = Activator.CreateInstance(classType);
-                    builder.Configuration.AddJsonFile(Path.Combine(CONF_FOLDER_NAME, item.FileName), optional: true, reloadOnChange: true);
+                    builder.Configuration.AddJsonFile(fileName, optional: true, reloadOnChange: true);
                     builder.Configuration.GetSection(classType.Name).Bind(instance);
                     builder.Services.AddSingleton(classType, instance);
 
@@ -294,12 +236,12 @@ namespace Merino
         {
             _logger.Info("▽MerinoWebApplication InitDbContext▽");
 
-            const string ADD_DB_CONTEXT = "AddDbContext";
+            const string ADD_DB_CONTEXT_METHOD_NAME = "AddDbContext";
 
             foreach (DataSource setting in settingList)
             {
 
-                if (setting.EntityFramework == null || !setting.EntityFramework.Valid) throw new ArgumentNullException();
+                if (setting.EntityFramework == null || !setting.EntityFramework.Valid) throw new ArgumentNullException(nameof(setting.EntityFramework));
 
                 //dbContextアセンブリ取得
                 Assembly assembly = Assembly.Load(setting.EntityFramework.ContextAssemblyName);
@@ -330,7 +272,7 @@ namespace Merino
 
                 //AddDbContextメソッドを取得
                 var addDbContextMethod = typeof(EntityFrameworkServiceCollectionExtensions)
-                     .GetMethods().FirstOrDefault(m => m.Name == ADD_DB_CONTEXT && m.IsGenericMethod)
+                     .GetMethods().FirstOrDefault(m => m.Name == ADD_DB_CONTEXT_METHOD_NAME && m.IsGenericMethod)
                      .MakeGenericMethod(dbContextType);
                 //AddDbContextを実行
                 addDbContextMethod.Invoke(builder.Services, new object[] { builder.Services, action, ServiceLifetime.Scoped, ServiceLifetime.Scoped });
@@ -340,5 +282,24 @@ namespace Merino
         }
         #endregion
 
+        #region 設定ファイル名の組み立て
+        /// <summary>
+        /// 設定ファイル名の組み立て
+        /// </summary>
+        /// <remarks>
+        /// 環境名に合わせて設定ファイル名を作成して返す
+        /// </remarks>
+        /// <param name="envName">環境名</param>
+        /// <param name="baseFileName">設定ファイル名</param>
+        /// <returns>設定ファイル名</returns>
+        private static string EnvSettingFileName(string? envName,string baseFileName )
+        {
+            return string.IsNullOrEmpty(envName)
+                ? baseFileName
+                : string.Join(".", baseFileName.Split(".").First(), envName, baseFileName.Split(".").Last());
+        }
+        #endregion
+
+        #endregion
     }
 }

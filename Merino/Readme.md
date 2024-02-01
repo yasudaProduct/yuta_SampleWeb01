@@ -8,9 +8,24 @@ Configフォルダを作成し、templateフォルダ内にある設定ファイ
 
 ## Webアプリケーションの初期化
 
-[設定ファイル](/Document/Setting.md)
+1. [設定ファイル](/Document/Setting.md)の準備
 
-### 依存注入
+2. WEBプロジェクトの参照に追加
+3. Program.csを修正
+
+```C#:Program.cs
+using Merino;
+
+//アプリケーション初期化
+WebApplicationBuilder builder = BootStrap.BuildWebApplication(args);
+
+WebApplication app = BootStrap.CreateWebApplication(builder);
+
+BootStrap.RunWebApplication(app);
+
+```
+
+## 依存注入
 
 
 ## ログ

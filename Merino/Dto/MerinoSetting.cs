@@ -9,15 +9,15 @@ namespace Merino.Settings
     public class MerinoSettings
     {
 
-        public SettingFile SettingFile { get; set; }
+        public SettingFile? SettingFile { get; set; }
 
         public string? InjectionAssemblyName { get; set; }
 
-        public List<CustomSettingFile> CustomSettingFile { get; set; }
+        public List<CustomSettingFile>? CustomSettingFile { get; set; }
 
-        public string Env { get; set; } = string.Empty;
+        public string? Env { get; set; } = string.Empty;
 
-        public List<EnvSetting> EnvSetting { get; set; }
+        public List<EnvSetting>? EnvSetting { get; set; }
 
         public Web Web { get; set; }
     }

@@ -91,7 +91,12 @@ namespace Merino
                 //scan.FromEntryAssembly()
                 scan.FromAssemblyDependencies(assembly)
                 //.AddClasses(classes => classes.InNamespaces("Services"))
-                .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Service") || type.Name.EndsWith("Repository") || type.Name.EndsWith("Dao")))
+                .AddClasses(classes => classes.Where(type => 
+                type.Name.EndsWith("Service") || 
+                //type.Name.EndsWith("Business") || 
+                type.Name.EndsWith("Repository") || 
+                type.Name.EndsWith("Dao")
+                ))
                 //.UsingRegistrationStrategy(Scrutor.RegistrationStrategy.Skip)
                 .AsMatchingInterface()
                 //.WithSingletonLifetime());
@@ -239,6 +244,9 @@ namespace Merino
             _logger.Info("▽MerinoWebApplication InitDbContext▽");
 
             const string ADD_DB_CONTEXT_METHOD_NAME = "AddDbContext";
+            const string npgsql = "Npgsql.EntityFrameworkCore.PostgreSQL"; //TODO どこか定義場所かえる
+            const string npgsqlExtensions = "NpgsqlDbContextOptionsBuilderExtensions";
+            const string npgsqlUseMethod = "UseNpgsql";
 
             foreach (DataSource setting in settingList)
             {
@@ -258,6 +266,8 @@ namespace Merino
                 var optionsBuilder = Activator.CreateInstance(optionsBuilderType);
 
                 //DBプロパイダに合わせてアクションを作成
+                //TODO FW側でやろうとすると使用していないdllをbinに含むことになるので、
+                //     ライブラリを分けるか、Useメソッドもデリケートから取得できる？
                 Action<DbContextOptionsBuilder>? action = null;
                 switch (setting.EntityFramework.UseDbProvider)
                 {
@@ -266,8 +276,20 @@ namespace Merino
                         action = delegate (DbContextOptionsBuilder op) { op.UseSqlServer(setting.ConnectionString); };
                         break;
                     case DbProvider.PostgreSQL:
+                        //Assemblyから拡張メソッドを取得
+                        Assembly asmby = Assembly.Load(npgsql);
+                        var useNpgsqlMethod = asmby.GetTypes().FirstOrDefault(t => t.Name == npgsqlExtensions)
+                            .GetMethods().FirstOrDefault(m =>
+                            m.Name == npgsqlUseMethod
+                            && m.GetParameters().Length == 3
+                            && m.GetParameters()[1].ParameterType == typeof(string));
+
                         //PostgreSQL実行Action作成 AddDbContextの引数用
-                        action = delegate (DbContextOptionsBuilder op) { op.UseNpgsql(setting.ConnectionString); };
+                        //action = delegate (DbContextOptionsBuilder op) { op.UseNpgsql(setting.ConnectionString); };
+                        action = delegate (DbContextOptionsBuilder op) {
+                            useNpgsqlMethod.Invoke(op, new object[] { op, setting.ConnectionString, null });
+                        };
+
                         break;
                     case DbProvider.UseInMemoryDatabase:
                         //PostgreSQL実行Action作成 AddDbContextの引数用

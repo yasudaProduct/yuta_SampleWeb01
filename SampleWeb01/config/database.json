@@ -2,33 +2,32 @@
   "DatabaseSetting": {
     "DataSources": {
       "DataSource": [
-        {
-          //"ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=WebMvcSample.Data;Trusted_Connection=True;MultipleActiveResultSets=true",
-          "EntityFramework": {
-            "Valid": true,
-            "UseDbProvider": 3,
-            "ContextAssemblyName": "SampleWeb01.Infrastructure",
-            "ContextClassName": "SampleWeb01.Infrastructure.Data.InMemoryDbContext"
-          }
-        }
+        //{
+        //  "EntityFramework": {
+        //    "Valid": true,
+        //    "UseDbProvider": 3,
+        //    "ContextAssemblyName": "SampleWeb01.Infrastructure",
+        //    "ContextClassName": "SampleWeb01.Infrastructure.Data.InMemoryDbContext"
+        //  }
+        //}
         //{
         //  "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=WebMvcSample.Data;Trusted_Connection=True;MultipleActiveResultSets=true",
         //  "EntityFramework": {
         //    "Valid": true,
         //    "UseDbProvider": 1,
-        //    "ContextAssemblyName": "WebMvcSampleLibrary",
-        //    "ContextClassName": "WebMvcSampleLibrary.Infrastructure.Data.WebMvcSampleContext"
+        //    "ContextAssemblyName": "SampleWeb01",
+        //    "ContextClassName": "SampleWeb01.Data.SampleWeb01Context"
         //  }
         //},
-        //{
-        //  "ConnectionString": "Host=localhost;Database=postgres;Username=postgres;Password=postgres",
-        //  "EntityFramework": {
-        //    "Valid": true,
-        //    "UseDbProvider": 2,
-        //    "ContextAssemblyName": "WebMvcSampleLibrary",
-        //    "ContextClassName": "WebMvcSampleLibrary.Infrastructure.Data.PostgresContext"
-        //  }
-        //}
+        {
+          "ConnectionString": "Host=localhost;Database=postgres;Username=postgres;Password=postgres",
+          "EntityFramework": {
+            "Valid": true,
+            "UseDbProvider": 2,
+            "ContextAssemblyName": "SampleWeb01.Infrastructure",
+            "ContextClassName": "SampleWeb01.Infrastructure.Data.PostgresDbContext"
+          }
+        }
       ]
     }
   }

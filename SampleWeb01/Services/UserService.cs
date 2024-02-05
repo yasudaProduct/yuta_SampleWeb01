@@ -1,11 +1,6 @@
-﻿using Humanizer;
-using Merino.Service;
-using Microsoft.EntityFrameworkCore;
-using SampleWeb01.Data;
-using SampleWeb01.Models;
+﻿using Merino.Service;
 using SampleWeb01.ViewModels;
-using SampleWeb01.Services.Dao;
-using SampleWeb01.Services.Businesses;
+using System.Transactions;
 
 namespace SampleWeb01.Services
 {
@@ -17,14 +12,14 @@ namespace SampleWeb01.Services
 
     public class UserService : MerinoService , IUserService
     {
-        private readonly SampleWeb01Context _context;
+        //private readonly SampleWeb01Context _context;
 
-        private readonly UserBusiness  _userBusiness;
+        //private readonly UserBusiness  _userBusiness;
 
-        public UserService (SampleWeb01Context context, UserBusiness userBusiness) 
+        public UserService () 
         {
-            _context = context;
-            _userBusiness = userBusiness;
+            //_context = context;
+            //_userBusiness = userBusiness;
         }
 
         /// <summary>
@@ -35,13 +30,13 @@ namespace SampleWeb01.Services
         public UserViewModel create(UserViewModel userModel) {
 
             //トランザクション
-            using (var tran = _context.Database.BeginTransaction())
+            using (var tran = new TransactionScope())
             {
 
                 //ユーザー登録
-                _userBusiness.CreateUser(userModel);
+                //_userBusiness.CreateUser(userModel);
 
-                tran.Commit();
+                //tran.Commit();
 
             };
 

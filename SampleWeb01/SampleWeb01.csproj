@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\Businesses\**" />
+    <Compile Remove="Services\Dao\**" />
+    <Content Remove="Services\Businesses\**" />
+    <Content Remove="Services\Dao\**" />
+    <EmbeddedResource Remove="Services\Businesses\**" />
+    <EmbeddedResource Remove="Services\Dao\**" />
+    <None Remove="Services\Businesses\**" />
+    <None Remove="Services\Dao\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.26" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.26">
       <PrivateAssets>all</PrivateAssets>

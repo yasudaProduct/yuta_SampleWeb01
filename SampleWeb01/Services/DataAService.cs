@@ -1,15 +1,6 @@
-﻿using Humanizer;
-using Merino.Service;
-using Microsoft.EntityFrameworkCore;
-using SampleWeb01.Data;
+﻿using Merino.Service;
 using SampleWeb01.Models;
-using SampleWeb01.ViewModels;
-using SampleWeb01.Services.Dao;
-using SampleWeb01.Services.Businesses;
-using SampleWeb01.Controllers;
-using static SampleWeb01.Models.TDataA;
-using static SampleWeb01.Const.Const;
-using System.Linq;
+using System.Transactions;
 
 namespace SampleWeb01.Services
 {
@@ -31,13 +22,13 @@ namespace SampleWeb01.Services
 
     public class DataAService : MerinoService , IDataAService
     {
-        private readonly SampleWeb01Context _context;
+        //private readonly SampleWeb01Context _context;
 
         //private readonly UserBusiness  _userBusiness;
 
-        public DataAService(SampleWeb01Context context) 
+        public DataAService() 
         {
-            _context = context;
+            //_context = context;
         }
 
         /// <summary>
@@ -50,14 +41,14 @@ namespace SampleWeb01.Services
             List<TDataA> dataList = null;
 
             //トランザクション
-            using (var tran = _context.Database.BeginTransaction())
+            using (var tran = new TransactionScope())
             {
 
                 //データ取得
-                dataList = _context.TDataA
-                    .Include(d => d.UserCompany)
-                    .Where(c => c.DeletedFlg == "0" && c.status != Status.completion)
-                    .ToList<TDataA>();
+                //dataList = _context.TDataA
+                //    .Include(d => d.UserCompany)
+                //    .Where(c => c.DeletedFlg == "0" && c.status != Status.completion)
+                //    .ToList<TDataA>();
 
             };
 
@@ -70,17 +61,17 @@ namespace SampleWeb01.Services
             List<TDataA> dataList = null;
 
             //トランザクション
-            using (var tran = _context.Database.BeginTransaction())
+            using (var tran = new TransactionScope())
             {
 
                 //データ取得
-                dataList = _context.TDataA
-                    .Include(d => d.UserCompany)
-                    .Where(c =>
-                    c.DeletedFlg == "0"
-                    && c.status != Status.completion
-                    && c.UserCompany.CompanyName == cond)
-                    .ToList<TDataA>();
+                //dataList = _context.TDataA
+                //    .Include(d => d.UserCompany)
+                //    .Where(c =>
+                //    c.DeletedFlg == "0"
+                //    && c.status != Status.completion
+                //    && c.UserCompany.CompanyName == cond)
+                //    .ToList<TDataA>();
             };
 
             return dataList;

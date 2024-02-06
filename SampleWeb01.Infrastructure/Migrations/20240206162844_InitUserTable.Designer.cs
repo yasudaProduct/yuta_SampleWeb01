@@ -2,132 +2,140 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SampleWeb01.Infrastructure.Data;
 
 #nullable disable
 
 namespace SampleWeb01.Infrastructure.Migrations
 {
-    [DbContext(typeof(PostgresDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(SqlServerDbContext))]
+    [Migration("20240206162844_InitUserTable")]
+    partial class InitUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.26")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SampleWeb01.Infrastructure.Data.Entity.TUser", b =>
+            modelBuilder.Entity("SampleWeb01.Infrastructure.Data.Entity.MUser", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("user_id");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("datetime2")
                         .HasColumnName("create_date");
 
                     b.Property<string>("CreatePgmId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("create_pgm_id");
 
                     b.Property<string>("CreateUserId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("create_user_id");
 
                     b.Property<string>("DeletedFlg")
                         .IsRequired()
                         .HasMaxLength(1)
-                        .HasColumnType("character varying(1)")
+                        .HasColumnType("nvarchar(1)")
                         .HasColumnName("deleted_flg");
 
                     b.Property<string>("MailAdress")
                         .IsRequired()
                         .HasMaxLength(319)
-                        .HasColumnType("character varying(319)")
+                        .HasColumnType("nvarchar(319)")
                         .HasColumnName("mail_address");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(12)
-                        .HasColumnType("character varying(12)")
+                        .HasColumnType("nvarchar(12)")
                         .HasColumnName("password");
 
                     b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("datetime2")
                         .HasColumnName("update_date");
 
                     b.Property<string>("UpdatePgmId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("update_pgm_id");
 
                     b.Property<string>("UpdateUserId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("update_user_id");
+
+                    b.Property<string>("UserCls")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("nvarchar(1)")
+                        .HasColumnName("user_cls");
 
                     b.HasKey("UserId");
 
                     b.ToTable("m_user");
                 });
 
-            modelBuilder.Entity("SampleWeb01.Infrastructure.Data.Entity.TUserCompany", b =>
+            modelBuilder.Entity("SampleWeb01.Infrastructure.Data.Entity.MUserCompany", b =>
                 {
                     b.Property<int>("UserId")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("user_id");
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(15)
-                        .HasColumnType("character varying(15)")
+                        .HasColumnType("nvarchar(15)")
                         .HasColumnName("company_name");
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("datetime2")
                         .HasColumnName("create_date");
 
                     b.Property<string>("CreatePgmId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("create_pgm_id");
 
                     b.Property<string>("CreateUserId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("create_user_id");
 
                     b.Property<string>("DeletedFlg")
                         .IsRequired()
                         .HasMaxLength(1)
-                        .HasColumnType("character varying(1)")
+                        .HasColumnType("nvarchar(1)")
                         .HasColumnName("deleted_flg");
 
                     b.Property<string>("Remarks")
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("remarks");
 
                     b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("datetime2")
                         .HasColumnName("update_date");
 
                     b.Property<string>("UpdatePgmId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("update_pgm_id");
 
                     b.Property<string>("UpdateUserId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("update_user_id");
 
                     b.HasKey("UserId");
@@ -135,18 +143,18 @@ namespace SampleWeb01.Infrastructure.Migrations
                     b.ToTable("m_user_company");
                 });
 
-            modelBuilder.Entity("SampleWeb01.Infrastructure.Data.Entity.TUserCompany", b =>
+            modelBuilder.Entity("SampleWeb01.Infrastructure.Data.Entity.MUserCompany", b =>
                 {
-                    b.HasOne("SampleWeb01.Infrastructure.Data.Entity.TUser", "User")
+                    b.HasOne("SampleWeb01.Infrastructure.Data.Entity.MUser", "User")
                         .WithOne("UserCompany")
-                        .HasForeignKey("SampleWeb01.Infrastructure.Data.Entity.TUserCompany", "UserId")
+                        .HasForeignKey("SampleWeb01.Infrastructure.Data.Entity.MUserCompany", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SampleWeb01.Infrastructure.Data.Entity.TUser", b =>
+            modelBuilder.Entity("SampleWeb01.Infrastructure.Data.Entity.MUser", b =>
                 {
                     b.Navigation("UserCompany")
                         .IsRequired();

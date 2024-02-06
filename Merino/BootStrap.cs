@@ -12,8 +12,9 @@ using static Merino.Const.FWConst;
 //TODO staticとインスタンスパフォーマンスどちらが良いか
 //TODO 環境ごとの設定ファイルの切替えを起動時とビルド時どちらが良いか検討
 //     →ビルド変数に合わせた方がよさそう。
-//TODO FW側でDBプロパイダに対応しようとすると不要なdllが配置される
-//     →プロジェクトを分ける？
+//FW側でDBプロパイダに対応しようとすると不要なdllが配置される
+// ⇒Useメソッドもリファレンス呼び出しにすることで、ContextがあるプロジェクトにプロパイダごとのEntityFrameworkを追加する
+
 
 namespace Merino
 {
@@ -225,10 +226,21 @@ namespace Merino
         {
             _logger.Info("▽MerinoWebApplication InitDbContext▽");
 
+            #region リファレンス定数
             const string ADD_DB_CONTEXT_METHOD_NAME = "AddDbContext";
-            const string npgsql = "Npgsql.EntityFrameworkCore.PostgreSQL"; //TODO どこか定義場所かえる
-            const string npgsqlExtensions = "NpgsqlDbContextOptionsBuilderExtensions";
-            const string npgsqlUseMethod = "UseNpgsql";
+
+            // TODO 定数を切り替えて共通化する
+            //SqlServer
+            const string SQLSERVER_CLASS_NAME = "Microsoft.EntityFrameworkCore.SqlServer";
+            const string SQLSERVER_EXTENSIONS_CLASS_NAME = "SqlServerDbContextOptionsExtensions";
+            const string SQLSERVER_USE_METHOD_NAME = "UseSqlServer";
+
+            //PostgreSQL
+            const string NPGSQL_CLASS_NAME = "Npgsql.EntityFrameworkCore.PostgreSQL";
+            const string NPGSQL_EXTENSIONS_CLASS_NAME = "NpgsqlDbContextOptionsBuilderExtensions";
+            const string NPGSQL_USE_METHOD_NAME = "UseNpgsql";
+            #endregion
+
 
             foreach (DataSource setting in settingList)
             {
@@ -254,16 +266,17 @@ namespace Merino
                 switch (setting.EntityFramework.UseDbProvider)
                 {
                     case DbProvider.SqlServer:
+                        //Assemblyから拡張メソッドを取得
                         //UseSqlServer実行Action作成 AddDbContextの引数用
                         action = delegate (DbContextOptionsBuilder op) { op.UseSqlServer(setting.ConnectionString); };
                         break;
 
                     case DbProvider.PostgreSQL:
                         //Assemblyから拡張メソッドを取得
-                        Assembly asmby = Assembly.Load(npgsql);
-                        var useNpgsqlMethod = asmby.GetTypes().FirstOrDefault(t => t.Name == npgsqlExtensions)
+                        Assembly asmby = Assembly.Load(NPGSQL_CLASS_NAME);
+                        var useNpgsqlMethod = asmby.GetTypes().FirstOrDefault(t => t.Name == NPGSQL_EXTENSIONS_CLASS_NAME)
                             .GetMethods().FirstOrDefault(m =>
-                            m.Name == npgsqlUseMethod
+                            m.Name == NPGSQL_USE_METHOD_NAME
                             && m.GetParameters().Length == 3
                             && m.GetParameters()[1].ParameterType == typeof(string));
 

@@ -10,8 +10,8 @@ namespace SampleWeb01.Infrastructure.Data
         {
         }
         
-        public DbSet<TUser> TUser { get; set; } = default!;
-        public DbSet<TUserCompany> TUserCompany { get; set; } = default!;
+        public DbSet<MUser> TUser { get; set; } = default!;
+        public DbSet<MUserCompany> TUserCompany { get; set; } = default!;
 
     }
 }

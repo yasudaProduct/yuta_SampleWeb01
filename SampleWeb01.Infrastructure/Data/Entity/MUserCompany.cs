@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SampleWeb01.Infrastructure.Data.Entity
 {
-    [Description("ユーザー")]
-    [Table("m_user")]
-    public class TUser : BaseEntity
+    [Description("企業")]
+    [Table("m_user_company")]
+    public class MUserCompany : BaseEntity
     {
         [Description("ユーザーID")]
         [Key]
@@ -16,18 +16,16 @@ namespace SampleWeb01.Infrastructure.Data.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UserId { get; set; }
 
-        [Description("パスワード")]
-        [Column("password")]
+        [Description("企業名")]
+        [Column("company_name")]
         [Required]
-        [MaxLength(12)]
-        [MinLength(4)]
-        public string Password { get; set; }
+        [MaxLength(15)]
+        public string CompanyName { get; set; }
 
-        [Description("メールアドレス")]
-        [Column("mail_address")]
-        [Required]
-        [MaxLength(319)]
-        public string MailAdress { get; set; }
+        [Description("備考")]
+        [Column("remarks")]
+        [MaxLength(50)]
+        public string? Remarks { get; set; }
 
         [Description("削除フラグ")]
         [Column("deleted_flg")]
@@ -36,8 +34,7 @@ namespace SampleWeb01.Infrastructure.Data.Entity
         [MaxLength(1)]
         public string? DeletedFlg { get; set; }
 
-
-        public TUserCompany UserCompany { get; set; }
+        public MUser User { get; set; }
 
     }
 }

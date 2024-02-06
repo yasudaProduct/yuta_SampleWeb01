@@ -275,6 +275,7 @@ namespace Merino
                         //UseSqlServer実行Action作成 AddDbContextの引数用
                         action = delegate (DbContextOptionsBuilder op) { op.UseSqlServer(setting.ConnectionString); };
                         break;
+
                     case DbProvider.PostgreSQL:
                         //Assemblyから拡張メソッドを取得
                         Assembly asmby = Assembly.Load(npgsql);

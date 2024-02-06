@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SampleWeb01.Infrastructure.Data.Entity;
 
 namespace SampleWeb01.Infrastructure.Data
 {
@@ -8,5 +9,9 @@ namespace SampleWeb01.Infrastructure.Data
         : base(options)
         {
         }
+        
+        public DbSet<TUser> TUser { get; set; } = default!;
+        public DbSet<TUserCompany> TUserCompany { get; set; } = default!;
+
     }
 }

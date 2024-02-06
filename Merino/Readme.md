@@ -26,9 +26,19 @@ BootStrap.RunWebApplication(app);
 ```
 
 ## 依存注入
+インジェクション拡張暮らすライブラリのScrutorを使する。 </br>
+(Scrutor https://github.com/khellang/Scrutor/tree/master)
+
+</br>
+設定ファイルに記載されたアセンブリ内のクラス名から自動的に判断し、</br>
+ScopedInjectionを行う。</br>
+
+InjectionされたクラスはASP.NET Coreの記述方法で取得可能。
 
 
 ## ログ
+
+
 
 ## Entity Framework
 
@@ -36,6 +46,8 @@ BootStrap.RunWebApplication(app);
 
 ```
 // マイグレーションファイル作成
+cd [スタートアッププロジェクト]
+
 dotnet ef migrations add [マイグレーションファイル名] --project [Contextを含むプロジェクト] --startup-project [実行プロジェクト] --context [実行するContext]
 
 // DBを更新する

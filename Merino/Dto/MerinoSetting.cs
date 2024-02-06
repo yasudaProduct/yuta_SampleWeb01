@@ -11,7 +11,7 @@ namespace Merino.Settings
 
         public SettingFile? SettingFile { get; set; }
 
-        public string? InjectionAssemblyName { get; set; }
+        public List<InjectionAssembly> InjectionAssembly { get; set; }
 
         public List<CustomSettingFile>? CustomSettingFile { get; set; }
 
@@ -34,6 +34,17 @@ namespace Merino.Settings
         public string AssemblyName { get; set; }
         public string ClassName { get; set; }
         public string FileName { get; set; }
+    }
+
+    public class InjectionAssembly
+    {
+        public string AssemblyName { get; set; }
+        public List<EndMatchNames> EndMatchNames { get; set; }
+    }
+
+    public class EndMatchNames
+    {
+        public string EndMatchName { get; set; }
     }
 
     public class EnvSetting

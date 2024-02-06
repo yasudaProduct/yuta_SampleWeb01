@@ -3,7 +3,24 @@
     "SettingFile": {
       "Database": "database.json"
     },
-    "InjectionAssemblyName": "SampleWeb01",
+    "InjectionAssembly": [
+      {
+        "AssemblyName": "SampleWeb01",
+        "EndMatchNames": [
+          {
+            "EndMatchName": "Service"
+          }
+        ]
+      },
+      {
+        "AssemblyName": "SampleWeb01.Infrastructure",
+        "EndMatchNames": [
+          {
+            "EndMatchName": "Repository"
+          }
+        ]
+      }
+    ],
     "CustomSettingFile": [
       {
         "AssemblyName": "SampleWeb01",

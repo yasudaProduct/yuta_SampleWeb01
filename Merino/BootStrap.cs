@@ -63,6 +63,9 @@ namespace Merino
             //設定ファイル読み込み
             InitAppSettings(ref builder);
 
+            //FW設定
+            MerinoSettings setting = builder.Configuration.GetSection(nameof(MerinoSettings)).Get<MerinoSettings>();
+
             //独自の環境を設定
             //foreach(EnvSetting env in _setting.EnvSetting)
             //{
@@ -84,23 +87,8 @@ namespace Merino
                 InitDbContext(dataSourceList, ref builder);
             }
 
-            //依存注入 https://github.com/khellang/Scrutor/tree/master
-            MerinoSettings setting = builder.Configuration.GetSection(nameof(MerinoSettings)).Get<MerinoSettings>();
-            Assembly assembly = Assembly.Load(setting.InjectionAssemblyName);
-            builder.Services.Scan(scan =>
-                //scan.FromEntryAssembly()
-                scan.FromAssemblyDependencies(assembly)
-                //.AddClasses(classes => classes.InNamespaces("Services"))
-                .AddClasses(classes => classes.Where(type => 
-                type.Name.EndsWith("Service") || 
-                //type.Name.EndsWith("Business") || 
-                type.Name.EndsWith("Repository") || 
-                type.Name.EndsWith("Dao")
-                ))
-                //.UsingRegistrationStrategy(Scrutor.RegistrationStrategy.Skip)
-                .AsMatchingInterface()
-                //.WithSingletonLifetime());
-                .WithScopedLifetime());
+            //依存注入
+            InjectionClass(setting.InjectionAssembly, ref builder);
 
             //セッション
             builder.Services.AddSession(options =>
@@ -164,12 +152,6 @@ namespace Merino
                 NLog.LogManager.Shutdown();
             }
         }
-
-        /// <summary>
-        /// InitWebApplication
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
 
         #region private methods
 
@@ -311,6 +293,48 @@ namespace Merino
         }
         #endregion
 
+        #region Injection処理
+        /// <summary>
+        /// Injection処理
+        /// </summary>
+        /// <param name="settingList"></param>
+        /// <param name="builder"></param>
+        private static void InjectionClass(List<InjectionAssembly> settingList, ref WebApplicationBuilder builder)
+        {
+            _logger.Info("▽MerinoWebApplication InjectionClass▽");
+
+            // interfaceがclassesにないので、おそらくinterfaceではなく実装クラス名を指定する必要がある？
+            // AsMatchingInterfaceとしてるので、それに紐づくインターフェイスがinjectionされるのか。
+            // IUserTestRepositoryに変更したらinjectionされてない模様。
+            // ⇒interface名と実装クラス名を合わせる必要がある？
+            // 　命名規則が必要だったら実装切り替えられないじゃん..
+            //   ⇒AsImplementedInterfacesにしたら行けた！
+
+            // migrationしたら起動時にエラーになる。
+            // ⇒指定したアセンブリ内の依存関係全て検索していたので、どこかのクラス名にRepositoryが含むのがヒットし
+            // 　AsMatchingInterfaceとしているので、マッチするinterfaceが見つからず。生成出来なかった
+
+            //依存注入 https://github.com/khellang/Scrutor/tree/master
+
+            foreach (InjectionAssembly injectionSetting in settingList)
+            {
+                string[] conditions = injectionSetting.EndMatchNames.Select(assembly => assembly.EndMatchName).ToArray();
+                //string[] conditions = injectionSetting.EndMatchNames;
+
+                Assembly assembly = Assembly.Load(injectionSetting.AssemblyName);
+
+                builder.Services.Scan(scan =>
+                scan.FromAssemblyDependencies(assembly)
+                .AddClasses(classes => classes.Where(type =>
+                type.Assembly == assembly && CheckTypeCondition(type, conditions)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
+            }
+
+            _logger.Info("△MerinoWebApplication InjectionClass△");
+        }
+        #endregion
+
         #region 設定ファイル名の組み立て
         /// <summary>
         /// 設定ファイル名の組み立て
@@ -329,6 +353,25 @@ namespace Merino
         }
         #endregion
 
+        /// <summary>
+        /// クラス名一致チェック
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="conditions"></param>
+        /// <returns></returns>
+        private static bool CheckTypeCondition(Type type, string[] conditions)
+        {
+            bool result = false;
+            foreach (string cond in conditions)
+            {
+                if (type.Name.EndsWith(cond))
+                {
+                    result = true;
+                    break;
+                };
+            }
+            return result;
+        }
         #endregion
     }
 }

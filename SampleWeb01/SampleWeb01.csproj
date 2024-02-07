@@ -7,14 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Domain\**" />
+    <Compile Remove="Infrastructure\**" />
+    <Compile Remove="Migrations\**" />
     <Compile Remove="Services\Businesses\**" />
     <Compile Remove="Services\Dao\**" />
+    <Content Remove="Domain\**" />
+    <Content Remove="Infrastructure\**" />
+    <Content Remove="Migrations\**" />
     <Content Remove="Services\Businesses\**" />
     <Content Remove="Services\Dao\**" />
+    <EmbeddedResource Remove="Domain\**" />
+    <EmbeddedResource Remove="Infrastructure\**" />
+    <EmbeddedResource Remove="Migrations\**" />
     <EmbeddedResource Remove="Services\Businesses\**" />
     <EmbeddedResource Remove="Services\Dao\**" />
+    <None Remove="Domain\**" />
+    <None Remove="Infrastructure\**" />
+    <None Remove="Migrations\**" />
     <None Remove="Services\Businesses\**" />
     <None Remove="Services\Dao\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\AuthService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +45,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\merino\Merino.csproj" />
+    <ProjectReference Include="..\SampleWeb01.Application\SampleWeb01.Application.csproj" />
     <ProjectReference Include="..\SampleWeb01.Infrastructure\SampleWeb01.Infrastructure.csproj" />
   </ItemGroup>
 

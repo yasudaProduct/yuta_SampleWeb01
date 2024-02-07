@@ -10,8 +10,8 @@ namespace SampleWeb01.Infrastructure.Data
         {
         }
         
-        public DbSet<MUser> TUser { get; set; } = default!;
-        public DbSet<MUserCompany> TUserCompany { get; set; } = default!;
+        public DbSet<MUser> MUser { get; set; } = default!;
+        public DbSet<MUserCompany> MUserCompany { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

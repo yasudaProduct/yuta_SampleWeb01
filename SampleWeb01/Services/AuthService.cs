@@ -8,7 +8,7 @@ namespace SampleWeb01.Services
     public interface IAuthService
     {
         /// <summary>
-        /// DataAリスト取得
+        /// 認証
         /// </summary>
         /// <returns></returns>
         public TUser Auth(string user_id, string password);

@@ -25,7 +25,7 @@
       {
         "AssemblyName": "SampleWeb01",
         "ClassName": "SampleWeb01.Util.WebMvcSampleSetting",
-        "FileName": "WebMvcSampleSetting.json"
+        "FileName": "MerinoWebAppSettings.json"
       }
     ],
     "Env": 1,

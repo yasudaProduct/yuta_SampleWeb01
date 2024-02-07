@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SampleWeb01.Application.Interface;
+using SampleWeb01.Application.UseCase;
+using SampleWeb01.Application.UseCase.Auth.Dto;
+using SampleWeb01.ViewModels;
 using System.Security.Claims;
-using SampleWeb01.Models;
-using SampleWeb01.Services;
 
 namespace SampleWeb01.Controllers
 {
@@ -16,14 +18,19 @@ namespace SampleWeb01.Controllers
 
         private readonly ILogger _logger;
 
-        private readonly IAuthService _service;
+        private readonly IAuthService _authService;
 
-        public AuthenticationController(ILogger<AuthenticationController> logger, IAuthService service)
+        private readonly IUserQueryService _userQueryService;
+
+        public AuthenticationController(
+            ILogger<AuthenticationController> logger,
+            IAuthService authService,
+            IUserQueryService userQueryservice)
         {
             _logger = logger;
-            _service = service;
+            _userQueryService = userQueryservice;
+            _authService = authService;
         }
-
 
         [HttpGet]
         public IActionResult Login()
@@ -33,12 +40,16 @@ namespace SampleWeb01.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string loginId, string password)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
 
+            //入力チェック
+            if (!ModelState.IsValid) return View(model);
+
             //認証処理
-            TUser user = _service.Auth(loginId, password);
-            if(user == null)
+            AuthRequest req = new AuthRequest(model.LoginId, model.Password);
+            AuthResponse res = _authService.Auth(req);
+            if (res == null)
             {
                 ModelState.AddModelError(string.Empty, "ログイン情報に誤りがあります。");
                 return View();
@@ -47,16 +58,16 @@ namespace SampleWeb01.Controllers
             //ユーザー情報取得 (Authに入れてもいいかも)
             //TODO Userテーブルが分かれていた場合どっちのテーブルから取得するの？ 区分を設けなきゃ？
 
-            string role = loginId == "admin" ? "Administrator" : "General";
+            string role = model.LoginId == "admin" ? "Administrator" : "General";
 
             //認証Cookie作成
             base.AddCookie<AppCookieDto>(new AppCookieDto() 
                 { 
-                Id = loginId,
+                Id = model.LoginId,
                 Name = "めりの", // TODO
                 });
 
-            _logger.LogInformation($"Controller:{nameof(AuthenticationController)} Action:{nameof(AuthenticationController.Login)} User:{loginId} Success!");
+            _logger.LogInformation($"Controller:{nameof(AuthenticationController)} Action:{nameof(AuthenticationController.Login)} User:{model.LoginId} Success!");
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

@@ -1,5 +1,4 @@
-﻿using Merino.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SampleWeb01.Data;
 using SampleWeb01.Models;
 using static SampleWeb01.Const.Const;

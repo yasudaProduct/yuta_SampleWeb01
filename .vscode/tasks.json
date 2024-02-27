@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/Sampleweb01/SampleWeb01.csproj"
+            ],
+            // "windows": {
+            //     "command": "dotnet build" //windowsの場合のコマンド
+            //   },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+              },
+              "problemMatcher": "$msCompile"
+        }
+    ]
+}

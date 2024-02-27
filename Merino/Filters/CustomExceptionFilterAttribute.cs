@@ -35,9 +35,9 @@ namespace Merino.Filters
 
             //TODO メール送信
 
-            var result = new ViewResult { ViewName = "CustomError"};
+            // var result = new ViewResult { ViewName = "Error"};
             //result.ViewData.Add("Exception", context.Exception);
-            context.Result = result;
+            // context.Result = result;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace Merino
             InitAppSettings(ref builder);
 
             //FW設定
-            MerinoSettings setting = builder.Configuration.GetSection(nameof(MerinoSettings)).Get<MerinoSettings>();
+            MerinoSettings setting = builder.Configuration.GetSection(nameof(MerinoSettings)).Get<MerinoSettings>() ?? throw new ArgumentNullException(nameof(MerinoSettings));
 
             //独自の環境を設定
             //foreach(EnvSetting env in _setting.EnvSetting)
@@ -78,18 +78,23 @@ namespace Merino
             //}            
 
             //Database設定
-            DatabaseSetting dbSetting = builder.Configuration.GetSection(nameof(DatabaseSetting)).Get<DatabaseSetting>() ?? throw new ArgumentNullException(nameof(DatabaseSetting));
+            DatabaseSetting dbSetting = builder.Configuration.GetSection(nameof(DatabaseSetting)).Get<DatabaseSetting>();
 
-            //EntityFrameworkが有効なDataSource設定を取得
-            var dataSourceList = dbSetting.DataSources.DataSource.Where(m => m.EntityFramework != null).ToList();
-            if (dataSourceList != null && dataSourceList.Count >= 0)
-            {
-                //EntityFramework設定
-                InitDbContext(dataSourceList, ref builder);
+            if(dbSetting != null ){
+
+                //EntityFrameworkが有効なDataSource設定を取得
+                var dataSourceList = dbSetting.DataSources.DataSource.Where(m => m.EntityFramework != null).ToList();
+                if (dataSourceList != null && dataSourceList.Count >= 0)
+                {
+                    //EntityFramework設定
+                    InitDbContext(dataSourceList, ref builder);
+                }
             }
 
             //依存注入
-            InjectionClass(setting.InjectionAssembly, ref builder);
+            if(setting.InjectionAssembly != null){
+                InjectionClass(setting.InjectionAssembly, ref builder);
+            }
 
             //セッション
             builder.Services.AddSession(options =>
@@ -179,7 +184,7 @@ namespace Merino
 
             //database.json
             string databaseFileName = "";
-            if (!string.IsNullOrEmpty(settingFile.Database))
+            if (settingFile != null && !string.IsNullOrEmpty(settingFile.Database))
             {
                 databaseFileName = Path.Combine(CONF_FOLDER_NAME, EnvSettingFileName(envName, settingFile.Database));
                 builder.Configuration.AddJsonFile(databaseFileName, optional: false, reloadOnChange: true);

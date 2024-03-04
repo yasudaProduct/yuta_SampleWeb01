@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SampleWeb01.Models
+namespace Merino.Entity
 {
     public class BaseEntity
     {

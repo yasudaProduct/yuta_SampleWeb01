@@ -55,11 +55,11 @@ Nolgを使用
 
 ## Entity Framework
 
-1.Contextを配置するプロジェクトにNuGetよりEntityFramework.Coreをインストール
-2.dbContextを継承したクラスを作成
-3.設定ファイルのEntityFrameworkの項目を記載
-4.DBプロパイダの
-5.マイグレーションの実行
+1-1.Contextを配置するプロジェクトにNuGetよりEntityFramework.Core、プロパイダごとのパッケージをインストール</br>
+1-2.スタートアッププロジェクトにEntityFramework.Toolをインストール</br>
+2.dbContextを継承したクラスを作成</br>
+3.設定ファイルのEntityFrameworkの項目を記載</br>
+4.マイグレーションの実行</br>
 
 #### ・マイグレーションの実行
 
